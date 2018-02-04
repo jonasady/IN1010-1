@@ -1,0 +1,42 @@
+Notater fra
+Java bruker krølleparanteser for å definere innmat. Alt slutter med ;
+if (v<0){
+  v=-v; %dette gjøres hvis if-setningen er riktig.
+}
+Kunne ja skrevet: if(v<0){v=-v}
+
+if (x<0){
+  f=-1;
+} else if (x==0){
+  f=0;
+} else {
+  f=1;
+}
+
+
+while (x<=255){
+  total=total+x;
+  x=2*x;
+}
+
+for (int i =1; i<10;i++){
+  sum=sum+i;
+}
+
+System.out.print() skriver ut parameter, hvis flere, skjøt sammen med +.
+System.out.println() skriver ut parameter og har linjeskift.
+
+double r=2.0;
+double v=3.1416*r*r;
+System.out.print("r = "+r);
+System.out.println(" gir areal "+v);
+
+I Java må alt ligge i klasser:
+class MinKlasse{
+  public static void main(String[] arg){
+    System.out.println("HEI!");
+  }
+}
+
+javac oversetter .java til .class-filer. Kompilerer filene.
+Deretter kan java brukes til aa kjøre klassene.
