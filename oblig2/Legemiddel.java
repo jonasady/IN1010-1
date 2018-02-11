@@ -1,10 +1,10 @@
 class Legemiddel{
   int id;
   String navn;
-  Double pris;
+  double pris;
   String virkestoff;
 
-  public Legemiddel(String navn, Double startpris, String virkestoff){
+  public Legemiddel(String navn, double startpris, String virkestoff){
     navn = navn;
     pris = startpris;
     virkestoff = virkestoff;
@@ -18,7 +18,7 @@ class Legemiddel{
     return navn;
   }
 
-  public Double hentPris(){
+  public double hentPris(){
     return pris;
   }
 
@@ -26,7 +26,7 @@ class Legemiddel{
     return virkestoff;
   }
 
-  public void settNyPris(Double pris){
+  public void settNyPris(double pris){
 
   }
 }

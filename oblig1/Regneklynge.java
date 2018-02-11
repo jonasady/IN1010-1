@@ -3,11 +3,21 @@ import java.util.Scanner;
 import java.io.*;
 
 class Regneklynge{
+  private File filnavn;
   private int maksNoderPerRack;
   private ArrayList<Rack> listRacks=new ArrayList<Rack>(0);
 
+  public Regneklynge(int maksNoderPerRack){
+    this.maksNoderPerRack = maksNoderPerRack;
+  }
+
+  public Regneklynge(String filnavn){
+    this.lesFil(filnavn);
+  }
+
+
   public void setMaksAntNoder(int setMaksNoderPerRack){
-    maksNoderPerRack=setMaksNoderPerRack;
+    this.maksNoderPerRack=setMaksNoderPerRack;
   }
 
 /*Lagt til som oppgE..*/
@@ -18,11 +28,11 @@ class Regneklynge{
         String line = scanner.nextLine();
         String[] splitLine=line.split(" ");
         if (splitLine.length==1){
-          Regneklynge.setMaksNoderPerRack(Integer.parseInt(splitLine[0]));
+          this.setMaksAntNoder(Integer.parseInt(splitLine[0]));
         }
         else{
           for (int i=0; i<Integer.parseInt(splitLine[0]);i++){
-            Regneklynge.settInnNode(Integer.parseInt(splitLine[1]),Integer.parseInt(splitLine[2]));
+            this.settInnNode(Integer.parseInt(splitLine[1]),Integer.parseInt(splitLine[2]));
             /*Vet ikke hva jeg skal kalle regneklyngen, ville gitt navnet paa regneklynga, f.eks. abel...*/
           }
         }
@@ -35,7 +45,10 @@ class Regneklynge{
   }
 
   public void settInnNode(int minne, int antProsessorer){
-    if (maksNoderPerRack>listRacks.get(listRacks.size()-1).getAntNoder()){
+    if listRacks.size()==0{
+
+    }
+    else if (maksNoderPerRack>listRacks.get(listRacks.size()-1).getAntNoder()){
       listRacks.get(listRacks.size()-1).settInn(minne,antProsessorer);
     }
     else{

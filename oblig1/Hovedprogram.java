@@ -3,15 +3,7 @@ import java.io.*;
 
 class Hovedprogram{
   public static void main(String[] args){
-    Regneklynge abel=new Regneklynge();
-    abel.lesFil("regneklynge.txt");
-
-    for (i=0;i<nodeMinne.size();i++){
-      for (j=0;i<antallProsessorer.size();i++){
-        abel.settInnNode(nodeMinne(i),antallProsessorer);
-        /*Litt usikker paa hvordan jeg skal gaa frem videre.*/
-      }
-    }
+    Regneklynge abel=new Regneklynge("regneklynge.txt");
 
     /*abel.setMaksAntNoder(12);*/
     /*for (int i=0; i<650;i++){
