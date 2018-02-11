@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class Rack{
-  private int antallNoder;
   private int antallProsessorer;
   private ArrayList<Node> listNodes=new ArrayList<Node>(0);
 
@@ -10,12 +9,11 @@ public class Rack{
     newNode.setMinneStr(minnestorrelse);
     newNode.setPros_ant(antNyeProsessorer);
     listNodes.add(newNode);
-    antallNoder++;
     antallProsessorer+=antNyeProsessorer;
   }
 
   public int getAntNoder(){
-    return antallNoder;
+    return listNodes.size();
   }
 
   public int getAntProsessorer(){
@@ -25,8 +23,7 @@ public class Rack{
   public int noderMedNokMinne(int paakrevdMinne){
     int antNokMinne=0;
     for (int i=0;i<listNodes.size();i++){
-      Node temp_node=listNodes.get(i);
-      if ((temp_node.nokMinne(paakrevdMinne))==true){
+      if (listNodes.get(i).nokMinne(paakrevdMinne)==true){
         antNokMinne++;
       }
     }
