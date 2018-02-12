@@ -9,11 +9,11 @@ class Regneklynge{
 
   public Regneklynge(int maksNoderPerRack){
     this.maksNoderPerRack = maksNoderPerRack;
-  }
+  } /*Konstruktoer tar inn maks antall noder i et rack.*/
 
   public Regneklynge(String filnavn){
     this.lesFil(filnavn);
-  }
+  } /*Konstruktoer tar inn filnavn.*/
 
 
   public void setMaksAntNoder(int setMaksNoderPerRack){
@@ -33,7 +33,6 @@ class Regneklynge{
         else{
           for (int i=0; i<Integer.parseInt(splitLine[0]);i++){
             this.settInnNode(Integer.parseInt(splitLine[1]),Integer.parseInt(splitLine[2]));
-            /*Vet ikke hva jeg skal kalle regneklyngen, ville gitt navnet paa regneklynga, f.eks. abel...*/
           }
         }
       }
@@ -45,8 +44,10 @@ class Regneklynge{
   }
 
   public void settInnNode(int minne, int antProsessorer){
-    if listRacks.size()==0{
-
+    if (listRacks.size()==0){
+      Rack newRack = new Rack();
+      newRack.settInn(minne,antProsessorer);
+      listRacks.add(newRack);
     }
     else if (maksNoderPerRack>listRacks.get(listRacks.size()-1).getAntNoder()){
       listRacks.get(listRacks.size()-1).settInn(minne,antProsessorer);

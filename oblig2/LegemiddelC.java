@@ -1,7 +1,6 @@
 class LegemiddelC extends Legemiddel{
-  public Legemiddel(String navn, Double startpris, String virkestoff){
-    navn = navn;
-    pris = startpris;
-    virkestoff = virkestoff;
+
+  public LegemiddelC(String navn, double startpris, String virkestoff){
+    super(navn,startpris,virkestoff);
   }
 }

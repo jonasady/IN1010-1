@@ -17,5 +17,4 @@ public class Node{
     public boolean nokMinne(int paakrevdMinne){
         return (minneStr>=paakrevdMinne); /*Returnerer False hvis minneStr<paakrevdMinne*/
     }
-
 }

@@ -1,5 +1,5 @@
 class TestLegemiddel{
-  public static void main(){
+  public static void main(String[] args){
     Legemiddel LM = new Legemiddel("Paracet",99.00,"Paracetamol");
     LegemiddelA LMA = new LegemiddelA("Kokain",10000.00,"Bensoylmethylekgonin");
     /*LegemiddelB LMB = new LegemiddelB("Vicodin",199.00,"Hydrocodone");

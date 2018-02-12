@@ -3,9 +3,10 @@ import java.io.*;
 
 class Hovedprogram{
   public static void main(String[] args){
-    Regneklynge abel=new Regneklynge("regneklynge.txt");
+    Regneklynge abel=new Regneklynge("regneklynge.txt"); /*OppgE*/
 
-    /*abel.setMaksAntNoder(12);*/
+    /*Det nedenfor hoerer til oppg.D*/
+    /*Regneklynge abel=new Regneklynge(12);*/
     /*for (int i=0; i<650;i++){
       abel.settInnNode(64,1);
     }*/ /*Legger inn 650 noder med 64 GB og 1 prosessor*/
