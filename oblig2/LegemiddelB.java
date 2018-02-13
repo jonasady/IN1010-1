@@ -1,13 +1,9 @@
 class LegemiddelB extends Legemiddel{
-
-  public LegemiddelB(String navn, double startpris, String virkestoff){
-    super(navn,startpris,virkestoff);
-    this.countID++;
-    this.id=countID;
-  }
-
   int styrke;
-
+  public LegemiddelB(String navn, double startpris, double virkestoff, int styrke){
+    super(navn,startpris,virkestoff);
+    this.styrke=styrke;
+  }
 
   public int hentVanedannendeStyrke(){
     return styrke;

@@ -3,9 +3,9 @@ class Legemiddel{
   int id;
   String navn;
   double pris;
-  String virkestoff;
+  double virkestoff;
 
-  public Legemiddel(String navn, double startpris, String virkestoff){
+  public Legemiddel(String navn, double startpris, double virkestoff){
     this.navn = navn;
     this.pris = startpris;
     this.virkestoff = virkestoff;
@@ -25,7 +25,7 @@ class Legemiddel{
     return pris;
   }
 
-  public String hentVirkestoff(){
+  public double hentVirkestoff(){
     return virkestoff;
   }
 

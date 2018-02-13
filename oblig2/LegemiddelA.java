@@ -1,11 +1,8 @@
 class LegemiddelA extends Legemiddel{
   int styrke;
 
-  public LegemiddelA(String navn, double startpris, String virkestoff){
+  public LegemiddelA(String navn, double startpris, double virkestoff, int styrke){
     super(navn,startpris,virkestoff);
-  }
-
-  public void setNarkotiskStyrke(int styrke){
     this.styrke=styrke;
   }
 
