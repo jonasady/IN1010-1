@@ -13,9 +13,10 @@ class TestResepter{
 
     /*Tester MilitaerResept:*/
     MilitaerResept MR1 = new MilitaerResept(LMA,Lege1,9090,10);
-    assert(true==false);
+
     System.out.println(MR1.farge());
     System.out.println(MR1.prisAaBetale());
+    assert MR1.prisAaBetale() == 0 : "Pris aa betale er feil";
 
     /*Tester P-Resept:*/
     PResept PR1 = new PResept(LMA,Lege1,9090);
