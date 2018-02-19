@@ -1,4 +1,4 @@
-class Resept{
+abstract class Resept{
   static int countID=0;
   int id;
   Legemiddel refLegemiddel;
@@ -33,21 +33,16 @@ class Resept{
     return reit;
   }
 
-  public boolean bruk(){
+  public boolean bruk(){/*Forsoker aa bruke resept? try-setn.?*/
     if (reit>0){
       reit--;
-      return True;
+      return true;
     }
     else{
-      return False;
+      return false;
     }
   }
 
-  abstract public String farge(){
-    /*Returner reseptens farge, enten "hvit" eller "blaa"*/
-  }
-
-  abstract public double prisAaBetale(){
-    /*Returnerer prisen pasienten maa betale.*/
-  }
+  abstract public String farge();
+  abstract public double prisAaBetale();
 }
