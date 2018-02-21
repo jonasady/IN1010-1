@@ -8,6 +8,13 @@ class TestResepter{
 
     /*Tester BlaaResept:*/
     BlaaResept BR1 = new BlaaResept(LMA,Lege1,9090,10);
+    if (BR1.prisAaBetale() == 0.25*LMA.hentPris()){
+      System.out.println("BR1, pris = riktig.");
+    }
+    else{
+      System.out.println("BR1, pris = feil.");
+    }
+    assert (BR1.prisAaBetale() == (0.75*LMA.hentPris())) : "Noe er galt med prisen.";
     System.out.println(BR1.farge());
     System.out.println(BR1.prisAaBetale());
 
@@ -16,7 +23,7 @@ class TestResepter{
 
     System.out.println(MR1.farge());
     System.out.println(MR1.prisAaBetale());
-    assert MR1.prisAaBetale() == 0 : "Pris aa betale er feil";
+    assert (MR1.prisAaBetale() == 0) : "Pris aa betale er feil";
 
     /*Tester P-Resept:*/
     PResept PR1 = new PResept(LMA,Lege1,9090);

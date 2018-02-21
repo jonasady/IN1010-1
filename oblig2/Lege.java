@@ -4,4 +4,8 @@ class Lege{
   public Lege(String navn){
     this.navn = navn;
   }
+
+  public String henteNavn(){
+    return this.navn;
+  }
 }

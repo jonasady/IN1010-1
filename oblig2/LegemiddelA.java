@@ -7,6 +7,6 @@ class LegemiddelA extends Legemiddel{
   }
 
   public int hentNarkotiskStyrke(){
-    return styrke;
+    return this.styrke;
   }
 }
