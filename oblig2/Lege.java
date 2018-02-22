@@ -6,6 +6,6 @@ class Lege{
   }
 
   public String henteNavn(){
-    return this.navn;
+    return navn;
   }
 }
