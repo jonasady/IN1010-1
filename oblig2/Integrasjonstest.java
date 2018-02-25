@@ -50,16 +50,15 @@ class Integrasjonstest{
     Resept[] resepter = {BR1,MR1,PR1};
     for (Resept item : resepter){
       System.out.println("Resept-ID: "+item.hentId());
-      System.out.println("Resept-ID: "+item.hentLegemiddel());
-      System.out.println("Resept-ID: "+item.hentLege());
-      System.out.println("Resept-ID: "+item.hentPasientId());
-      System.out.println("Resept-ID: "+item.hentReit());
-      if (item instanceof BlaaResept){
-        System.out.println("Resept-ID: "+item.farge());
-        System.out.println("Resept-ID: "+item.prisAaBetale());
+      System.out.println("Resept, legemiddel: "+item.hentLegemiddel());
+      System.out.println("Resept, utskrivende lege: "+item.hentLege());
+      System.out.println("Resept, pasient-ID: "+item.hentPasientId());
+      System.out.println("Antall gjenvaerende ganger: "+item.hentReit());
+      if ((item instanceof BlaaResept) || (item instanceof HvitResept)){
+        System.out.println("Resept, fargeklasse: "+item.farge());
+        System.out.println("Pris for legemiddel: "+item.prisAaBetale());
+        /*Skrive dette inn i klassen?? Som egen metode.*/
       }
-      else if (item instanceof PResept){}
-      else if (item instanceof MilitaerResept){}
     }
   }
 }

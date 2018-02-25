@@ -11,26 +11,28 @@ abstract class Resept{
     this.refLege = utskrivendeLege;
     this.idPasient = pasientId;
     this.reit = reit;
+    this.countID++;
+    this.id=countID;
   }
 
   public int hentId(){
-    return id;
+    return this.id;
   }
 
-  public Legemiddel hentLegemiddel(){
-    return refLegemiddel;
+  public String hentLegemiddel(){
+    return refLegemiddel.hentNavn();
   }
 
-  public Lege hentLege(){
-    return refLege;
+  public String hentLege(){
+    return refLege.henteNavn();
   }
 
   public int hentPasientId(){
-    return idPasient;
+    return this.idPasient;
   }
 
   public int hentReit(){
-    return reit;
+    return this.reit;
   }
 
   public boolean bruk(){/*Forsoker aa bruke resept? try-setn.?*/

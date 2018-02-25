@@ -11,5 +11,4 @@ class Fastlege extends Lege implements Kommuneavtale{
     public int hentAvtalenummer(){
       return this.avtalenummer;
     }
-
 }
