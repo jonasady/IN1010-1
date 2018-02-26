@@ -3,4 +3,15 @@ ECHO off
 rm *.class
 javac Lege.java
 javac Fastlege.java
-java TestResepter
+javac Resept.java
+javac BlaaResept.java
+javac HvitResept.java
+javac PResept.java
+javac MilitaerResept.java
+javac Legemiddel.java
+javac LegemiddelA.java
+javac LegemiddelB.java
+javac LegemiddelC.java
+javac Kommuneavtale.java
+javac Integrasjonstest.java
+java Integrasjonstest
