@@ -7,8 +7,9 @@ class Stabel<T> extends Lenkeliste<T>{
     this.leggTil(x);
   }
 
-  public void taAv(){
-    
+  public T taAv(){
+    lengde = this.stoerrelse();
+    fjern(lengde);
   }
 
 }
