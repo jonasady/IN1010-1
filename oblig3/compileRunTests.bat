@@ -6,4 +6,6 @@ javac Lenkeliste.java
 javac Stabel.java
 javac TestLenkeliste.java
 javac TestStabel.java
-java TestStabel
+javac SortertLenkeliste.java
+javac TestSortertLenkeliste.java
+java TestSortertLenkeliste

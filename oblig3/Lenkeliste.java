@@ -1,5 +1,5 @@
 class Lenkeliste<T> implements Liste<T>{
-  private class Node{
+  public class Node{
     Node neste = null;
     T data;
 
@@ -7,7 +7,7 @@ class Lenkeliste<T> implements Liste<T>{
       this.data = x;
     }
   }
-  private Node start = new Node(null);
+  public Node start = new Node(null);
 
   @Override /*Foerst inn, foerst ut = queue.*/
   public void leggTil(T x){
@@ -105,5 +105,4 @@ class Lenkeliste<T> implements Liste<T>{
     }
     return p.data;
   }
-
 }
