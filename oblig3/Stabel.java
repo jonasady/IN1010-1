@@ -1,6 +1,6 @@
 class Stabel<T> extends Lenkeliste<T>{
   public Stabel(){
-    super()
+    super();
   }
 
   public void leggPaa(T x){
@@ -8,8 +8,7 @@ class Stabel<T> extends Lenkeliste<T>{
   }
 
   public T taAv(){
-    lengde = this.stoerrelse();
-    fjern(lengde);
+    int lengde = this.stoerrelse();
+    return fjern(lengde);
   }
-
 }

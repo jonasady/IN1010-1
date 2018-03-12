@@ -33,9 +33,9 @@ class Lenkeliste<T> implements Liste<T>{
 
   @Override
   public void sett(int pos, T x){
-    if (pos<0 || pos>=this.stoerrelse()){
+    /*if (pos<0 || pos>=this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
-    }
+    }*/
     Node p = start;
     for (int i = 0; i < pos; i++){
       p = p.neste;
@@ -45,27 +45,29 @@ class Lenkeliste<T> implements Liste<T>{
 
   @Override
   public void leggTil(int pos, T x){
-    if (pos<0 || pos>=this.stoerrelse()){
+    /*if (pos<0 || pos>=this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
+    }*/
+    if (pos==0){
+      this.leggTil(x);
     }
-    if (start == null){
-      start.neste = new Node(x);
+    else{
+      Node p = start;
+      for (int i = 1; i < pos; i++){ /*Teller til elementet foer pos.*/
+        p = p.neste;
+      }
+      Node foerst = p; /*For aa ta vare paa peker til elementet etter.*/
+      p.neste = new Node(x);
+      Node nyeste = p.neste;
+      nyeste.neste = foerst.neste;
     }
-    Node p = start;
-    for (int i = 1; i < pos; i++){ /*Teller til elementet foer pos.*/
-      p = p.neste;
-    }
-    Node foerst = p; /*For aa ta vare paa peker til elementet etter.*/
-    p.neste = new Node(x);
-    Node nyeste = p.neste;
-    nyeste.neste = foerst.neste;
   }
 
   @Override
   public T fjern(int pos){
-    if (pos<0 || pos>this.stoerrelse()){
+    /*if (pos<0 || pos>this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
-    }
+    }*/
     Node p = start;
     for (int i = 1; i < pos; i++){
       p = p.neste;
@@ -88,9 +90,9 @@ class Lenkeliste<T> implements Liste<T>{
 
   @Override
   public T hent(int pos){
-    if (pos<0 || pos>=this.stoerrelse()){
+    /*if (pos<0 || pos>=this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
-    }
+    }*/
     Node p = start.neste;
     for (int i = 0; i < pos; i++){
       p = p.neste;
