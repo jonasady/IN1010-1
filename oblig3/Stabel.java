@@ -9,6 +9,6 @@ class Stabel<T> extends Lenkeliste<T>{
 
   public T taAv(){
     int lengde = this.stoerrelse();
-    return fjern(lengde);
+    return fjern(lengde-1); /*Posisjon er lengde-1*/
   }
 }

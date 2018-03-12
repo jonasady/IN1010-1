@@ -26,50 +26,56 @@ class Lenkeliste<T> implements Liste<T>{
 
   @Override
   public T fjern(){
-    Node p = start.neste;
-    start.neste = p.neste; /*Ikke lenger noen peker til foerste i lista.*/
-    return p.data; /*Er det p.data de vil ha tak i eller bare p?*/
+    if (start.neste==null){
+      throw new UgyldigListeIndeks(-1);
+    }
+    else{
+      Node p = start.neste;
+      start.neste = p.neste;
+      return p.data;
+    }
   }
 
   @Override
   public void sett(int pos, T x){
-    /*if (pos<0 || pos>=this.stoerrelse()){
+    if (pos<0 || pos>=this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
-    }*/
+    }
     Node p = start;
     for (int i = 0; i < pos; i++){
       p = p.neste;
     }
-    p.data = x;
+    p.neste.data = x;
   }
 
   @Override
   public void leggTil(int pos, T x){
-    /*if (pos<0 || pos>=this.stoerrelse()){
+    if (pos<0 || pos > this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
-    }*/
+    }
     if (pos==0){
-      this.leggTil(x);
+      Node p = new Node(x);
+      p.neste = start.neste;
+      start.neste = p;
     }
     else{
       Node p = start;
-      for (int i = 1; i < pos; i++){ /*Teller til elementet foer pos.*/
+      for (int i = 0; i < pos; i++){
         p = p.neste;
       }
-      Node foerst = p; /*For aa ta vare paa peker til elementet etter.*/
-      p.neste = new Node(x);
-      Node nyeste = p.neste;
-      nyeste.neste = foerst.neste;
+      Node ny = new Node(x);
+      ny.neste=p.neste;
+      p.neste=ny;
     }
   }
 
   @Override
   public T fjern(int pos){
-    /*if (pos<0 || pos>this.stoerrelse()){
+    if (pos<0 || pos>=this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
-    }*/
+    }
     Node p = start;
-    for (int i = 1; i < pos; i++){
+    for (int i = 0; i < pos; i++){
       p = p.neste;
     }
     Node fjernes = p.neste;
@@ -90,9 +96,9 @@ class Lenkeliste<T> implements Liste<T>{
 
   @Override
   public T hent(int pos){
-    /*if (pos<0 || pos>=this.stoerrelse()){
+    if (pos<0 || pos>=this.stoerrelse()){
       throw new UgyldigListeIndeks(pos);
-    }*/
+    }
     Node p = start.neste;
     for (int i = 0; i < pos; i++){
       p = p.neste;
