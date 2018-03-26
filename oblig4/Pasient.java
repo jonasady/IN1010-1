@@ -9,11 +9,15 @@ class Pasient{
     this.fodselsnr = fodselsnr;
   }
 
+  public int hentID(){
+    return this.id;
+  }
+
   public void leggPaa(Resept x){
     this.reseptliste.leggTil(x);
   }
 
-  public Resept hentUt(){
-    /*Skal hente ut hele reseptlisten.*/
+  public Liste hentUt(){
+    return this.reseptliste;
   }
 }
