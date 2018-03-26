@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 class Lenkeliste<T> implements Liste<T>{
   public class Node{
     Node neste = null;
@@ -8,6 +10,34 @@ class Lenkeliste<T> implements Liste<T>{
     }
   }
   public Node start = new Node(null);
+
+  public class LenkelisteIterator<T> implements Iterator<T>{
+    private Liste<T> minListe;
+    private int indeks = 0;
+
+    public LenkelisteIterator(Liste<T> lx){
+      minListe = lx;
+    }
+
+    @Override
+    public boolean hasNext(){
+      return indeks<minListe.stoerrelse();
+    }
+
+    @Override
+    public T next(){
+      return minListe.hent(indeks++);
+    }
+
+    @Override
+    public void remove(){
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  public LenkelisteIterator iterator(){
+    return new LenkelisteIterator(this);
+  }
 
   @Override /*Foerst inn, foerst ut = queue.*/
   public void leggTil(T x){
