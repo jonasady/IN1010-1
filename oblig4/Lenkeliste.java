@@ -11,7 +11,7 @@ class Lenkeliste<T> implements Liste<T>{
   }
   public Node start = new Node(null);
 
-  public class LenkelisteIterator/*<T>*/ implements Iterator<T>{
+  public class LenkelisteIterator implements Iterator<T>{
     private Liste<T> minListe;
     private int indeks = 0;
 
