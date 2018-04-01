@@ -27,7 +27,7 @@ abstract class Resept{
     return refLege.henteNavn();
   }
 
-  public int hentPasientId(){
+  public Pasient hentPasientId(){
     return this.p;
   }
 
