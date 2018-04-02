@@ -10,3 +10,5 @@ D2 denne delen fungerte og jeg fikk skrevet ut legene i ordnet rekkefølge, ford
 D3 lager problemer for sorteringen fordi den ikke ønsker å sortere Fastleger, bare Leger.
 
 D4 var litt repetisjon av valgmenyene som ble laget i de Del D1 og D2.
+D5 litt repetisjon av de andre oppgavene og nøstede for-løkker.
+Brukte 5-7 timer på det jeg har gjort på del D.

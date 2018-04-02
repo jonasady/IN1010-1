@@ -297,6 +297,7 @@ public class Legesystem{
   }
 
   static void valg5(){
+    System.out.println("Denne funksjonen er ikke fullfoert.");
   }
 
   public static void testLegesystem(){
