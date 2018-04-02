@@ -3,20 +3,24 @@ abstract class Resept{
   int id;
   Legemiddel refLegemiddel;
   Lege refLege;
-  Pasient p;
+  int pasientId;
   int reit;
 
-  public Resept(Legemiddel legemiddel, Lege utskrivendeLege, int id, int reit){
+  public Resept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
     this.refLegemiddel = legemiddel;
     this.refLege = utskrivendeLege;
-    this.id = id;
+    this.pasientId = pasientId;
     this.reit = reit;
-    this.countID++;
     this.id=countID;
+    this.countID++;
   }
 
   public int hentId(){
     return this.id;
+  }
+
+  public Legemiddel hentHeleLegemiddel(){
+    return this.refLegemiddel;
   }
 
   public String hentLegemiddel(){
@@ -27,8 +31,8 @@ abstract class Resept{
     return refLege.hentNavn();
   }
 
-  public Pasient hentPasientId(){
-    return this.p;
+  public int hentPasientId(){
+    return this.pasientId;
   }
 
   public int hentReit(){

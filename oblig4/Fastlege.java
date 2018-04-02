@@ -8,7 +8,7 @@ class Fastlege extends Lege implements Kommuneavtale{
   }
 
   @Override
-    public int hentAvtalenummer(){
-      return this.avtalenummer;
-    }
+  public int hentAvtalenummer(){
+    return this.avtalenummer;
+  }
 }
