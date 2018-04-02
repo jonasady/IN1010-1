@@ -43,7 +43,6 @@ class Lenkeliste<T> implements Liste<T>{
   public void leggTil(T x){
     if (start.neste == null){ /*Sjekker om lista er tom.*/
       start.neste = new Node(x);
-      System.out.println(start.neste.data);
     }
     else{
       Node p = start;

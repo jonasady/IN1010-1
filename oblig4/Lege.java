@@ -6,13 +6,13 @@ class Lege implements Comparable<Lege>{
     this.navn = navn;
   }
 
-  public String henteNavn(){
+  public String hentNavn(){
     return this.navn;
   }
 
   @Override
   public int compareTo(Lege annenLege){
-    return (this.navn.compareTo(annenLege.henteNavn()));
+    return (this.navn.compareTo(annenLege.hentNavn()));
   }
 
   public void skrivResept(Resept x){

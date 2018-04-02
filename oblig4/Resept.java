@@ -6,10 +6,10 @@ abstract class Resept{
   Pasient p;
   int reit;
 
-  public Resept(Legemiddel legemiddel, Lege utskrivendeLege, Pasient p, int reit){
+  public Resept(Legemiddel legemiddel, Lege utskrivendeLege, int id, int reit){
     this.refLegemiddel = legemiddel;
     this.refLege = utskrivendeLege;
-    this.p = p;
+    this.id = id;
     this.reit = reit;
     this.countID++;
     this.id=countID;
@@ -24,7 +24,7 @@ abstract class Resept{
   }
 
   public String hentLege(){
-    return refLege.henteNavn();
+    return refLege.hentNavn();
   }
 
   public Pasient hentPasientId(){

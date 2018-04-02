@@ -20,4 +20,8 @@ class Pasient{
   public Liste hentUt(){
     return this.reseptliste;
   }
+
+  public String hentNavn(){
+    return this.navn;
+  }
 }
