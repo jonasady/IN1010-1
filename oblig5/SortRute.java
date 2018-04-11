@@ -1,8 +1,10 @@
-class BlaaResept extends Resept{
-  public BlaaResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
-    super(legemiddel, utskrivendeLege, pasientId, reit);
+class SortRute extends Rute{
+
+  public SortRute(int rad, int kol){
+    super(rad, kol);
   }
-  public String tilTegn(){
-    return "blaa";
+
+  public char tilTegn(){
+    return '#';
   }
 }
