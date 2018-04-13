@@ -23,5 +23,13 @@ class Oblig50 {
         }
         //Printer ut labyrint:
         System.out.printf(l.toString());
+
+        //Sjekker at aapning fungerer:
+        if (l.getLab().get(0).get(5) instanceof Aapning){
+          System.out.println("lab[0][5] er en aapning.");
+        }
+
+        //Sjekker at det blir satt inn naboer:
+        System.out.println(l.getLab().get(0).get(5).hentNabo('s').tilTegn());
     }
 }

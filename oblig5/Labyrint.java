@@ -13,49 +13,54 @@ class Labyrint{
     this.lab = komplett;
   }
 
-  static Labyrint lesFraFil(File fil) throws FileNotFoundException{
-  /*  try{*/
-      Scanner scanner = new Scanner(fil);
-      String forsteLine = scanner.nextLine();
-      String[] splitLine = forsteLine.split(" ");
-      int ant_rad = Integer.parseInt(splitLine[0]);
-      int ant_kol = Integer.parseInt(splitLine[1]);
-      int radTeller = 0;
-      ArrayList<ArrayList<Rute>> komplett = new ArrayList<ArrayList<Rute>>();
-
-      while (scanner.hasNextLine()){
-        String line = scanner.nextLine();
-        ArrayList<Rute> rad = new ArrayList<Rute>();
-        for (int i=0; i<ant_kol;i++){
-          char tegn = line.charAt(i);
-          Rute ny;
-          if (tegn == '.'){
-            ny = new HvitRute(radTeller,i);
-          } else {
-            ny = new SortRute(radTeller,i);
-          }
-          rad.add(ny);
-        }
-        radTeller++;
-        komplett.add(rad);
-      }
-      Labyrint labyrint = new Labyrint(ant_rad, ant_kol, komplett);
-      return labyrint;
-/*    }
-    catch (FileNotFoundException e){
-      System.out.println("Finner ikke filen.");
-      throw e;
-    }*/
+  public ArrayList<ArrayList<Rute>> getLab(){
+    return this.lab;
   }
 
-  /*public lagLab(){
-    for (int x = 0; i<=2; i++){
-      for (int y = 0; y<=2;y++){
-        Rute ny = new Rute(x,y);
+  static Labyrint lesFraFil(File fil) throws FileNotFoundException{
+    Scanner scanner = new Scanner(fil);
+    String forsteLine = scanner.nextLine();
+    String[] splitLine = forsteLine.split(" ");
+    int ant_rad = Integer.parseInt(splitLine[0]);
+    int ant_kol = Integer.parseInt(splitLine[1]);
+    int radTeller = 0;
+    ArrayList<ArrayList<Rute>> komplett = new ArrayList<ArrayList<Rute>>();
 
+    while (scanner.hasNextLine()){
+      String line = scanner.nextLine();
+      ArrayList<Rute> rad = new ArrayList<Rute>();
+      for (int i=0; i<ant_kol;i++){
+        char tegn = line.charAt(i);
+        Rute ny;
+        if (tegn == '.' && (radTeller==ant_rad-1 || radTeller==0 || i==ant_kol-1 || i==0)){
+          ny = new Aapning(radTeller,i);
+        } else if (tegn == '.'){
+          ny = new HvitRute(radTeller,i);
+        } else {
+          ny = new SortRute(radTeller,i);
+        }
+        rad.add(ny);
+      }
+      radTeller++;
+      komplett.add(rad);
+    }
+    for (int x=0; x<ant_rad; x++){
+      for (int y=0; y<ant_kol; y++){
+        if (y<ant_kol-1){
+          komplett.get(x).get(y).settOst(komplett.get(x).get(y+1));
+          komplett.get(x).get(y+1).settVest(komplett.get(x).get(y));
+        }
+        if (x<ant_rad-1){
+          komplett.get(x).get(y).settSyd(komplett.get(x+1).get(y));
+          komplett.get(x+1).get(y).settNord(komplett.get(x).get(y));
+        }
       }
     }
-  }*/
+
+    Labyrint labyrint = new Labyrint(ant_rad, ant_kol, komplett);
+    return labyrint;
+  }
+
   @Override
   public String toString(){
     String labyrintStr = "";
@@ -66,9 +71,7 @@ class Labyrint{
         labyrintStr = labyrintStr.concat(charTilStr);
       }
       labyrintStr = labyrintStr.concat("\n");
-
     }
-
     return labyrintStr;
   }
 }

@@ -1,6 +1,6 @@
 class Aapning extends HvitRute{
-  public Aapning(int rad, int kol, Labyrint lab){
-    super(rad, kol, lab);
+  public Aapning(int rad, int kol){
+    super(rad, kol);
   }
 
   public char tilTegn(){

@@ -6,6 +6,7 @@ abstract class Rute{
   public Rute ref_syd = null;
   public Rute ref_vest = null;
   public Rute ref_ost = null;
+  public Rute r;
 
   public Rute(int rad, int kol){
     this.coor_rad = rad;
@@ -33,4 +34,30 @@ abstract class Rute{
   }
 
   abstract public char tilTegn(); /*Returnerer . eller #*/
+
+  public Rute hentNabo(char c){
+    if (c == 'n'){
+      this.r = this.ref_nord;
+    } else if (c == 's'){
+      this.r = this.ref_syd;
+    } else if (c == 'o'){
+      this.r = this.ref_ost;
+    } else if (c == 'v'){
+      this.r = this.ref_vest;
+    }
+    return this.r;
+  }
+
+  public void gaa(){
+
+  }
+
+  public void finnUtvei(){
+
+  }
+
+  public Liste<String> finnUtveiFra(int kol, int rad){
+    
+  }
+
 }
