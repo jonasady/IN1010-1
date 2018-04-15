@@ -27,7 +27,9 @@ class Oblig50 {
         //Rute ny = l.getLab().get(0).get(5);
 
         //l.getLab().get(2).get(1).gaa(l.getLab().get(3).get(1));
-        l.getLab().get(2).get(1).finnUtvei();
+        //System.out.println(l.getLab().get(5).get(0).ref_labyrint);
+        l.finnUtveiFra(1,2);
+        System.out.println(l.utveier);
 
         //Sjekker at det blir satt inn naboer:
         //System.out.println(l.getLab().get(0).get(5).hentNabo('s').tilTegn());

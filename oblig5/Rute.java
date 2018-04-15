@@ -8,7 +8,6 @@ abstract class Rute{
   public Rute ref_ost = null;
   public Rute r;
   public String vei = "";
-  public Liste<String> utveier;
 
   public Rute(int rad, int kol){
     this.coor_rad = rad;
@@ -50,32 +49,23 @@ abstract class Rute{
     return this.r;
   }
 
-  public boolean gaa(Rute forrige){
+  public void gaa(Rute forrige){
+    this.vei = forrige.vei + ("(" + this.coor_kol + "," + this.coor_rad + ")");
     if (this.tilTegn()=='#'){
-      return false;
+      return;
     } else if (this.erAapning() == true){
-      this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
-      System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
-      return true;
+      this.ref_labyrint.utveier.leggTil(this.vei);
+      return;
     } else {
-      if ((this.ref_ost!=forrige) && (this.ref_ost.gaa(this)==true)){
-        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
-        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
-        return true;
-      } else if ((this.ref_syd!=forrige) && (this.ref_syd.gaa(this)==true)){
-        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
-        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
-        return true;
-      } else if ((this.ref_vest!=forrige) && (this.ref_vest.gaa(this)==true)){
-        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
-        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
-        return true;
-      } else if ((this.ref_nord!=forrige) && (this.ref_nord.gaa(this)==true)){
-        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
-        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
-        return true;
-      } else {
-        return false;
+      this.vei = this.vei + ("-->");
+      if (this.ref_ost!=forrige){
+        this.ref_ost.gaa(this);
+      } if (this.ref_syd!=forrige){
+        this.ref_syd.gaa(this);
+      } if (this.ref_vest!=forrige){
+        this.ref_vest.gaa(this);
+      } if (this.ref_nord!=forrige){
+        this.ref_nord.gaa(this);
       }
     }
   }
@@ -84,13 +74,5 @@ abstract class Rute{
 
   public void finnUtvei(){
     this.gaa(this);
-    this.vei=this.vei.substring(0,this.vei.length()-5); //For aa fjerne starten.Fjerne linjeskift?
-    System.out.println(this.vei);
   }
-
-  public Liste<String> finnUtveiFra(int kol, int rad){
-    String utvei = this.ref_labyrint.getLab().get(rad).get(kol).finnUtvei();
-    this.utveier.leggTil(utvei);
-  }
-
 }
