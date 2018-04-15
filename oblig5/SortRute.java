@@ -7,4 +7,9 @@ class SortRute extends Rute{
   public char tilTegn(){
     return '#';
   }
+
+  @Override
+  public boolean erAapning(){
+    return false;
+  }
 }

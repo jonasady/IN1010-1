@@ -6,4 +6,9 @@ class HvitRute extends Rute{
   public char tilTegn(){
     return '.';
   }
+
+  @Override
+  public boolean erAapning(){
+    return false;
+  }
 }

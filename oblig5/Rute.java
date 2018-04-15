@@ -7,6 +7,7 @@ abstract class Rute{
   public Rute ref_vest = null;
   public Rute ref_ost = null;
   public Rute r;
+  //public ArrayList<Rute> ruteVei;
 
   public Rute(int rad, int kol){
     this.coor_rad = rad;
@@ -33,7 +34,7 @@ abstract class Rute{
     this.ref_vest = nabo;
   }
 
-  abstract public char tilTegn(); /*Returnerer . eller #*/
+  abstract public char tilTegn(); //Returnerer . eller #
 
   public Rute hentNabo(char c){
     if (c == 'n'){
@@ -48,16 +49,37 @@ abstract class Rute{
     return this.r;
   }
 
-  public void gaa(){
-
+  public boolean gaa(Rute forrige){
+    if (this.tilTegn()=='#'){
+      return false;
+    } else if (this.erAapning() == true){
+      System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+      return true;
+    } else {
+      if ((this.ref_ost!=forrige) && (this.ref_ost.gaa(this)==true)){
+        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        return true;
+      } else if ((this.ref_syd!=forrige) && (this.ref_syd.gaa(this)==true)){
+        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        return true;
+      } else if ((this.ref_vest!=forrige) && (this.ref_vest.gaa(this)==true)){
+        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        return true;
+      } else if ((this.ref_nord!=forrige) && (this.ref_nord.gaa(this)==true)){
+        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
+
+  abstract public boolean erAapning();
 
   public void finnUtvei(){
 
   }
 
-  public Liste<String> finnUtveiFra(int kol, int rad){
-    
-  }
+  //public Liste<String> finnUtveiFra(int kol, int rad){  }
 
 }

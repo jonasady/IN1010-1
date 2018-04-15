@@ -6,4 +6,9 @@ class Aapning extends HvitRute{
   public char tilTegn(){
     return '.';
   }
+
+  @Override
+  public boolean erAapning(){
+    return true;
+  }
 }
