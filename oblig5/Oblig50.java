@@ -24,9 +24,10 @@ class Oblig50 {
         //Printer ut labyrint:
         System.out.printf(l.toString());
 
-        Rute ny = l.getLab().get(0).get(5);
+        //Rute ny = l.getLab().get(0).get(5);
 
-        l.getLab().get(2).get(1).gaa(l.getLab().get(3).get(1));
+        //l.getLab().get(2).get(1).gaa(l.getLab().get(3).get(1));
+        l.getLab().get(2).get(1).finnUtvei();
 
         //Sjekker at det blir satt inn naboer:
         //System.out.println(l.getLab().get(0).get(5).hentNabo('s').tilTegn());

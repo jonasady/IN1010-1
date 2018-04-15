@@ -7,7 +7,8 @@ abstract class Rute{
   public Rute ref_vest = null;
   public Rute ref_ost = null;
   public Rute r;
-  //public ArrayList<Rute> ruteVei;
+  public String vei = "";
+  public Liste<String> utveier;
 
   public Rute(int rad, int kol){
     this.coor_rad = rad;
@@ -53,20 +54,25 @@ abstract class Rute{
     if (this.tilTegn()=='#'){
       return false;
     } else if (this.erAapning() == true){
-      System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+      this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
+      System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
       return true;
     } else {
       if ((this.ref_ost!=forrige) && (this.ref_ost.gaa(this)==true)){
-        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
+        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
         return true;
       } else if ((this.ref_syd!=forrige) && (this.ref_syd.gaa(this)==true)){
-        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
+        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
         return true;
       } else if ((this.ref_vest!=forrige) && (this.ref_vest.gaa(this)==true)){
-        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
+        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
         return true;
       } else if ((this.ref_nord!=forrige) && (this.ref_nord.gaa(this)==true)){
-        System.out.println("Rad: " + this.coor_rad + " Kolonne: " + this.coor_kol);
+        this.vei = this.vei.concat("(" + this.coor_kol + "," + this.coor_rad + ")");
+        System.out.println("(" + this.coor_kol + "," + this.coor_rad + ")");
         return true;
       } else {
         return false;
@@ -77,9 +83,14 @@ abstract class Rute{
   abstract public boolean erAapning();
 
   public void finnUtvei(){
-    
+    this.gaa(this);
+    this.vei=this.vei.substring(0,this.vei.length()-5); //For aa fjerne starten.Fjerne linjeskift?
+    System.out.println(this.vei);
   }
 
-  //public Liste<String> finnUtveiFra(int kol, int rad){  }
+  public Liste<String> finnUtveiFra(int kol, int rad){
+    String utvei = this.ref_labyrint.getLab().get(rad).get(kol).finnUtvei();
+    this.utveier.leggTil(utvei);
+  }
 
 }
