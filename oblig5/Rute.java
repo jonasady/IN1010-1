@@ -77,7 +77,7 @@ abstract class Rute{
   abstract public boolean erAapning();
 
   public void finnUtvei(){
-
+    
   }
 
   //public Liste<String> finnUtveiFra(int kol, int rad){  }
