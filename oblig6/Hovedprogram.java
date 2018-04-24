@@ -70,6 +70,7 @@ public class Monitor{
       while (antallMeldinger == 0){ //Ikke mulig aa hente ut melding naar det ikke er noen.
         ikkeTomMonitor.await();
       } //antallMeldinger > 0
+      //Maa fjerne melding fra listen.
       antallMeldinger --;
       ikkeFullMonitor.signal(); //Sier fra at det er plass til flere meldinger.
     }
