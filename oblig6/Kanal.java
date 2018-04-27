@@ -26,6 +26,10 @@ public final class Kanal {
         return id;
     }
 
+    public int hentLengde(){
+      return total;
+    }
+
     /**
      * <p>Returnerer neste melding. Hvis kanalen er stengt for videre
      * kommunikasjon, returneres <tt>null</tt>.</p>

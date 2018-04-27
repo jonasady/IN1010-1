@@ -3,14 +3,19 @@ public class Kryptograf implements Runnable{
   private Monitor dekryptertMonitor;
   private final int ANTALL;
   privante int dekryptert = 0;
-  
-  Kryptograf(Monitor kryptertMonitor, Monitor dekryptertMonitor, ){
+
+  Kryptograf(Monitor kryptertMonitor, Monitor dekryptertMonitor){
     this.kryptertMonitor = kryptertMonitor;
     this.dekryptertMonitor = dekryptertMonitor;
   }
 
   @Override
   public void run(){
+    try{
+      this.kryptertMonitor.henteUtMelding();
 
+    } catch (InterruptedException e){
+      System.out.println("Stopp 1"); //For aa vite hvor det stopper.
+    }
   }
 }

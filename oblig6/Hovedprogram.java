@@ -17,10 +17,8 @@ public class Hovedprogram{
   }
   Operasjonssentral ops = new Operasjonssentral(antallTelegrafister);
   Kanal [] kanaler = ops.hentKanalArray();
-  Telegrafist telegrafist1 = new Telegrafist(monitorKryptert, );
-  Telegrafist telegrafist2 = new Telegrafist(monitorKryptert);
-  Telegrafist telegrafist3 = new Telegrafist(monitorKryptert);
-  new Thread(telegrafist).start();
+
+  new Thread(telegrafist1).start();
   //Kryptograf kryptograf = new Kryptograf(monitorKryptert, monitorDekryptert);
   //new Thread(kryptograf).start();
 
@@ -28,7 +26,7 @@ public class Hovedprogram{
     new Hovedprogram(Tekster);
   }*/
 
-  class Monitor{
+  /*class Monitor{
     private int antallMeldinger = 0;
     private final int MONITOR_KAPASITET = 5; //Kanskje et annet tall??
 
@@ -58,5 +56,5 @@ public class Hovedprogram{
       }
       finally {monitorlas.unlock();}
     }
-  }
+  }*/
 }

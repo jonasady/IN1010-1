@@ -19,4 +19,8 @@ public class Melding{
   public int getID(){
     return this.id;
   }
+
+  public String dekrypterer(){
+    return Kryptografi.dekrypter(this.meld);
+  }
 }
