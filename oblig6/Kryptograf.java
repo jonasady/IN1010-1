@@ -1,8 +1,8 @@
 public class Kryptograf implements Runnable{
   private Monitor kryptertMonitor;
   private Monitor dekryptertMonitor;
-  private final int ANTALL;
-  privante int dekryptert = 0;
+  private final int ANTALL =5;
+  private int dekryptert = 0;
 
   Kryptograf(Monitor kryptertMonitor, Monitor dekryptertMonitor){
     this.kryptertMonitor = kryptertMonitor;
