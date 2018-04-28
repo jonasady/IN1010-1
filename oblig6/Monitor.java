@@ -11,6 +11,10 @@ public class Monitor{
   private final int MONITOR_KAPASITET = 100; //Kanskje et annet tall??
   private ArrayList<Melding> ListeMeldinger = new ArrayList<Melding>();
 
+  int antMeldIMonitor(){
+    return this.antallMeldinger;
+  }
+
   void settInnMelding(Melding meld) throws InterruptedException{
     monitorlas.lock();
     try {
@@ -20,7 +24,6 @@ public class Monitor{
       //Legg til i listen over meldinger.
       ListeMeldinger.add(meld);
       antallMeldinger++;
-      System.out.println("Antall meldinger: " + antallMeldinger);
       ikkeTomMonitor.signal(); //Sier fra til operatoer.
     }
     finally {monitorlas.unlock();}

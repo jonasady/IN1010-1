@@ -12,6 +12,10 @@ public class Melding{
     return this.meld;
   }
 
+  public void settMelding(String meld){
+    this.meld = meld;
+  }
+
   public int getSekvens(){
     return this.sekvens;
   }
@@ -20,7 +24,7 @@ public class Melding{
     return this.id;
   }
 
-  public String dekrypterer(){
+  /*public String dekrypterer(){
     return Kryptografi.dekrypter(this.meld);
-  }
+  }*/
 }

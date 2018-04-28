@@ -17,12 +17,12 @@ public class Telegrafist implements Runnable{
         int kanalLengde = this.kanal.hentLengde();
         for (int i = 0; i < kanalLengde; i++){
           Melding meld = new Melding(this.kanal.lytt(),i,this.id);
-          System.out.println(meld);
           this.monitor.settInnMelding(meld);
+          System.out.println("Melding satt inn av Telegrafist.");
         }
       }
     } catch (InterruptedException e){
-      System.out.println("Stopp 1"); //For aa vite hvor det stopper.
+      System.out.println("Stopp i run for telegrafist."); //For aa vite hvor det stopper.
     }
   }
 }

@@ -21,7 +21,7 @@ class TestProgram{
     //new Thread(telegrafist3).start();
 
     Monitor dekryptertMonitor = new Monitor();
-    Kryptograf kryptograf1 = new Kryptograf(kryptertMonitor,dekryptertMonitor);    
-
+    Kryptograf kryptograf1 = new Kryptograf(kryptertMonitor,dekryptertMonitor);
+    new Thread(kryptograf1).start();
   }
 }
