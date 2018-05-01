@@ -11,7 +11,7 @@ public class Monitor{
   private final int MONITOR_KAPASITET = 100; //Kanskje et annet tall??
   private ArrayList<Melding> ListeMeldinger = new ArrayList<Melding>();
 
-  int antMeldIMonitor(){
+  int antMeld(){
     return this.antallMeldinger;
   }
 
@@ -24,7 +24,7 @@ public class Monitor{
       //Legg til i listen over meldinger.
       ListeMeldinger.add(meld);
       antallMeldinger++;
-      ikkeTomMonitor.signal(); //Sier fra til operatoer.
+      ikkeTomMonitor.signalAll(); //Sier fra til operatoer.
     }
     finally {monitorlas.unlock();}
   }
@@ -33,6 +33,9 @@ public class Monitor{
     monitorlas.lock();
     Melding meld;
     try {
+      /*if (ListeMeldinger.get(0)==null){
+        return null;
+      }*/
       while (antallMeldinger == 0){ //Ikke mulig aa hente ut melding naar det ikke er noen.
         ikkeTomMonitor.await();
       } //antallMeldinger > 0
@@ -40,7 +43,7 @@ public class Monitor{
       meld = ListeMeldinger.get(0);
       ListeMeldinger.remove(0);
       antallMeldinger --;
-      ikkeFullMonitor.signal(); //Sier fra at det er plass til flere meldinger.
+      ikkeFullMonitor.signalAll(); //Sier fra at det er plass til flere meldinger.
     }
     finally {monitorlas.unlock();}
     return meld;

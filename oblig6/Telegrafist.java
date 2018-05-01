@@ -19,7 +19,10 @@ public class Telegrafist implements Runnable{
           Melding meld = new Melding(this.kanal.lytt(),i,this.id);
           this.monitor.settInnMelding(meld);
           System.out.println("Melding satt inn av Telegrafist.");
+          Thread.sleep((long)(1000*Math.random()));
         }
+        /*Melding meldSlutt = null;
+        this.monitor.settInnMelding(meldSlutt);*/
       }
     } catch (InterruptedException e){
       System.out.println("Stopp i run for telegrafist."); //For aa vite hvor det stopper.

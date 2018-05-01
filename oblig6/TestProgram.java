@@ -9,10 +9,6 @@ class TestProgram{
     Operasjonssentral ops = new Operasjonssentral(antallTelegrafister);
     Kanal [] kanaler = ops.hentKanalArray();
 
-    System.out.println(kanaler[0].hentId());
-    System.out.println(kanaler[1].hentId());
-    System.out.println(kanaler[2].hentId());
-
     Telegrafist telegrafist1 = new Telegrafist(kryptertMonitor,0,kanaler[0]);
     new Thread(telegrafist1).start();
     //Telegrafist telegrafist2 = new Telegrafist(kryptertMonitor,1,kanaler[1]);
