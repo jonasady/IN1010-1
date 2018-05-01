@@ -4,7 +4,7 @@ class Tekster {
     "NORA. I natt sover jeg ikke.",
     "HELMER. Men, kjære Nora -",
     "NORA (ser på sitt ur). Klokken er ennu ikke så mange. Sett deg her, Torvald; vi to har meget å tale sammen. (hun setter seg ved den ene side av bordet.)",
-    "HELMER. Nora, - hva er dette her? Dette stivnede uttrykk -",
+    "HELMER. Nora, - hva er dette her? Dette stivnede uttrykk -"};/*,
     "NORA. Sett deg ned. Det blir langt. Jeg har meget å tale med deg om.",
     "HELMER (setter seg ved bordet like overfor henne). Du engster meg, Nora. Og jeg forstår deg ikke.",
     "NORA. Nei, det er det just. Du forstår meg ikke. Og jeg har heller aldri forstått deg - før i aften. Nei, du skal ikke avbryte meg. Du skal bare høre på hva jeg sier. - Dette er et oppgjør, Torvald.",
@@ -124,11 +124,11 @@ class Tekster {
     "NORA. At samliv mellom oss to kunne bli et ekteskap. Farvel.",
     "(hun går ut gjennem forstuen.)",
     "HELMER. (synker ned på en stol ved døren og slår hendene for ansiktet). Nora! Nora! (ser seg om og reiser seg.) Tomt. Hun er her ikke mer. (et håp skyter opp i ham.) Det vidunderligste -?!"
-    };
+  };*/
 
     static String[] grunnloven = {
     "Kongeriket Norges Grunnlov gitt i riksforsamlingen på Eidsvoll den 17. mai 1814, slik den lyder etter senere endringer, senest grunnlovsvedtak av 13. mai 2014.",
-    "A. Om statsformen",
+    "A. Om statsformen"};/*,
     "§1 Kongeriket Norge er et fritt, selvstendig, udelelig og uavhendelig rike. Dets regjeringsform er innskrenket og arvelig monarkisk.",
     "§2 Verdigrunnlaget forblir vår kristne og humanistiske arv. Denne Grunnlov skal sikre demokratiet, rettsstaten og menneskerettighetene.",
     "B. Om den utøvende makt, kongen og den kongelige familie og om religionen",
@@ -139,16 +139,16 @@ class Tekster {
     "§7 Er ingen arveberettiget prins eller prinsesse til,kan kongen foreslå sin etterfølger for Stortinget, som har rett til å bestemme valget hvis kongens forslag ikke bifalles.",
     "§8 Kongens myndighetsalder fastsettes ved lov. Så snart kongen har oppnådd den lovbestemte alder, erklærer han seg offentlig å være myndig.",
     "§9 Så snart kongen, som myndig, tiltrer regjeringen, avlegger han følgende ed for Stortinget: «Jeg lover og sverger å ville regjere kongeriket Norge i overensstemmelse med dets konstitusjon og lover, så sant hjelpe meg Gud den allmektige og allvitende!» Er intet storting på den tid samlet, nedlegges eden skriftlig i statsrådet og gjentas høytidelig av kongen på første storting."
-    };
+  };*/
 
     static String[] ojd = {
     "Ole-Johan Dahl (October 12, 1931 / June 29, 2002) was a Norwegian computer scientist and is considered to be the father of Simula and object-oriented programming, together with Kristen Nygaard.",
     "Dahl is a member of the small group of scientists who will be regarded as founders of their own field of science. His field was informatics and he won the two most prestigious international prizes specific to that field: The ACM A.M. Turing Award (considered to be the \"Nobel Prize of Computing\"), in 2001 and the IEEE John von Neumann Medal. He was made Commander of The Order of Saint Olav by the King of Norway in 2000, and received a number of other signs of recognition.",
-    "With Kristen Nygaard, he produced the initial ideas for object-oriented (OO) programming in the 1960s at the Norwegian Computing Center (NR - Norsk Regnesentral) as part of the Simula I (1961-1965) and Simula 67 (1965-1968) simulation programming languages",
+    "With Kristen Nygaard, he produced the initial ideas for object-oriented (OO) programming in the 1960s at the Norwegian Computing Center (NR - Norsk Regnesentral) as part of the Simula I (1961-1965) and Simula 67 (1965-1968) simulation programming languages"};/*,,
     "Dahl and Nygaard were the first to develop the concepts of class, subclass (allowing information hiding), inheritance, dynamic object creation, etc., all important aspects of the OO paradigm. Their work has led to a fundamental change in how software systems are designed and programmed, resulting in reusable, reliable, scalable applications that have streamlined the process of writing software code and facilitated software programming. Current object-oriented programming languages include C++ and Java, both widely used in programming a wide range of applications from large-scale distributed systems to small, personal applications, including personal computers, home entertainment devices, and stand-alone arcade applications.",
     "Dahl became a full professor in 1968 at the University of Oslo, creating the discipline of computer science here. He was the first professor of informatics, responsible for establishing research and education programs in this rapidly expanding field. Here he worked on Hierarchical Program Structures, probably his most influential publication, which appeared co-authored with C.A.R. Hoare in the influential book Structured Programming of 1972 by Dahl, Dijkstra and Hoare, perhaps the best-known academic book concerning software in the 1970s.",
     "In his University career, Dahl focused on the use of formal methods, to rigorously reason about programs. Unlike many theoretical computer scientists at the time, his work had a solid motivation in practical applicability and implementation experience. With Owe, who became his closest collaborator, he investigated languages, specification, verification and related tool development, in the long term ABEL project, and in the development of formal methods for object-orientation. His research is today represented and continued by the PMA research group."
-    };
+  };*/
 
     static String[][] tekster = {ojd, dukkehjem, grunnloven};
     static int ANTALL_TEKSTER = tekster.length;

@@ -1,7 +1,6 @@
 public class Kryptograf implements Runnable{
   private Monitor kryptertMonitor;
   private Monitor dekryptertMonitor;
-  private final int ANTALL =5;
   private int dekryptert = 0;
   private Melding meld;
   private int kryptert = 0;
@@ -14,15 +13,20 @@ public class Kryptograf implements Runnable{
   @Override
   public void run(){
     try{
-        while ((this.kryptert<=this.ANTALL) /*&& (this.kryptertMonitor.henteUtMelding()!=null)*/){
-          this.kryptert++;
-          this.meld=this.kryptertMonitor.henteUtMelding();
-          System.out.println("Melding hentet ut av Kryptograf.");
-          String tekst = this.meld.getMelding();
-          this.meld.settMelding(Kryptografi.dekrypter(tekst));
-          System.out.println("Melding som er dekryptert: " + this.meld.getMelding());
-          this.dekryptertMonitor.settInnMelding(this.meld);
-          Thread.sleep((long)(2*Math.random()));
+      while (true){
+        this.kryptert++;
+        this.meld=this.kryptertMonitor.henteUtMelding();
+        if (this.meld==null){
+          //System.out.println("Ingen meldinger aa hente.");
+          Melding meld = new Melding(null,-1,-1);
+          this.dekryptertMonitor.settInnMelding(meld);
+          break;
+        }
+        //System.out.println("Melding hentet ut av Kryptograf.");
+        String tekst = this.meld.getMelding();
+        this.meld.settMelding(Kryptografi.dekrypter(tekst));
+        //System.out.println("Melding som er dekryptert ID: " + this.meld.getID() + "  sek: "+ this.meld.getSekvens());
+        this.dekryptertMonitor.settInnMelding(this.meld);
       }
     } catch (InterruptedException e){
       System.out.println("Stopp i run for Kryptograf"); //For aa vite hvor det stopper.

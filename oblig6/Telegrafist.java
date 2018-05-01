@@ -13,17 +13,14 @@ public class Telegrafist implements Runnable{
   @Override
   public void run(){
     try{
-      while (this.kanal.lytt()!=null){
-        int kanalLengde = this.kanal.hentLengde();
-        for (int i = 0; i < kanalLengde; i++){
-          Melding meld = new Melding(this.kanal.lytt(),i,this.id);
-          this.monitor.settInnMelding(meld);
-          System.out.println("Melding satt inn av Telegrafist.");
-          Thread.sleep((long)(1000*Math.random()));
-        }
-        /*Melding meldSlutt = null;
-        this.monitor.settInnMelding(meldSlutt);*/
+      int kanalLengde = this.kanal.hentLengde();
+      for (int i = 0; i < kanalLengde; i++){
+        Melding meld = new Melding(this.kanal.lytt(),i,this.id);
+        this.monitor.settInnMelding(meld);
+        //System.out.println("Melding satt inn av Telegrafist.");
       }
+      Melding meld = new Melding(null,kanalLengde,this.id);
+      this.monitor.settInnMelding(meld);
     } catch (InterruptedException e){
       System.out.println("Stopp i run for telegrafist."); //For aa vite hvor det stopper.
     }

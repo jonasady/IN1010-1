@@ -8,8 +8,14 @@ public class Monitor{
   private Condition ikkeTomMonitor = monitorlas.newCondition();
   private Condition ikkeFullMonitor = monitorlas.newCondition();
   private int antallMeldinger = 0;
-  private final int MONITOR_KAPASITET = 100; //Kanskje et annet tall??
+  private final int MONITOR_KAPASITET = 1000; //Kanskje et annet tall??
   private ArrayList<Melding> ListeMeldinger = new ArrayList<Melding>();
+  private int antallSendere;
+  private int antallNull=0;
+
+  Monitor(int antallSendere){
+    this.antallSendere=antallSendere;
+  }
 
   int antMeld(){
     return this.antallMeldinger;
@@ -18,6 +24,12 @@ public class Monitor{
   void settInnMelding(Melding meld) throws InterruptedException{
     monitorlas.lock();
     try {
+      if (meld.getMelding()==null){
+        //System.out.println("Innsender tom: " + meld.getID() + "  sek: "+ meld.getSekvens());
+        //System.out.println(this.antallSendere + " " + this.antallNull);
+        this.antallNull++;
+        return;
+      }
       while (antallMeldinger >= MONITOR_KAPASITET){
         ikkeFullMonitor.await(); //Venter paa at monitor ikke skal vaere full.
       } //Naa er antallMeldinger < MONITOR_KAPASITET
@@ -33,9 +45,10 @@ public class Monitor{
     monitorlas.lock();
     Melding meld;
     try {
-      /*if (ListeMeldinger.get(0)==null){
+      if ((this.antallNull==this.antallSendere) && (antallMeldinger == 0)){
+        //System.out.println("linje 47, monitor. sendere: " + this.antallSendere);
         return null;
-      }*/
+      }
       while (antallMeldinger == 0){ //Ikke mulig aa hente ut melding naar det ikke er noen.
         ikkeTomMonitor.await();
       } //antallMeldinger > 0
