@@ -16,72 +16,61 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 
-/*class Rute extends Button{
-  char merke = ' ';
-  Rute(){
-    super(" ");
-    setFont(new Font(50));
-    setPrefSize(120,120);
-  }
-  void settMerke(char c){
-    setText(""+c);
-    this.merke = c;
-  }
-}
-
-class Klikkbehandler implements EventHandler<ActionEvent>{
-  @Override
-  public void handle(ActionEvent e){
-    if (true){
-      velge((Rute)e.getSource());
-    }
-  }
-}*/
-
-public class VisLabyrint extends Application {
+public class VisLabyrint extends Application{
   @Override
   public void start(Stage teater) {
-    int kol = 0;
-    int rad = 0;
+
     GridPane labyrint = new GridPane();
     labyrint.setGridLinesVisible(true);
 
     File file = new FileChooser().showOpenDialog(teater);
     try {
       Scanner f = new Scanner(file);
-	    rad = f.nextInt();  kol = f.nextInt();
-      //System.out.println("Rad: "+ rad + " Kolonne: " + kol);
-      //brett = new Rute[(rad*kol)+1];
-      //Klikkbehandler klikk = new Klikkbehandler();
-      //for (){}
+      String forsteLine = f.nextLine();
+      String[] splitLine = forsteLine.split(" ");
+      int ant_rad = Integer.parseInt(splitLine[0]);
+      int ant_kol = Integer.parseInt(splitLine[1]);
+      int teller =0;
+      Rute[] brett = new Rute[(ant_rad*ant_kol)+1];
+
+      Klikkbehandler klikk = new Klikkbehandler();
+
+
+      while (f.hasNextLine()){
+        String[] linje = f.nextLine().split("");
+        for (int i = 0; i<ant_kol;i++){
+          Rute rute = new Rute(linje[i]);
+          labyrint.add(rute,i,teller);
+        }
+        teller++;
+      }
+
+      labyrint.add(new Text("#"),0,0);
+      labyrint.add(new Text("."),1,0);
+
+      System.out.println("Hei verden.");
+      //labyrint.setLayoutX(2);
+      //labyrint.setLayoutY(2);
 	  }
     catch (Exception e) {}
-
-    /*void velge(Rute r){
-      if (r.merke!=' '){
-        statusinto.setText("Denne ruten er opptatt; velg en annen.");
-        return;
-      } else{
-        statusinto.setText("Velg en rute.");
-      }
-      r.settMerke('0');
-    }*/
-
-    /*Circle fargedemo = new Circle(100);
-	  fargedemo.setCenterX(100);
-    fargedemo.setCenterY(100);
-	  fargedemo.setFill(Color.rgb(127,255,212));
-
-	  Pane kulisser = new Pane();
-	  kulisser.getChildren().add(fargedemo);
-
+    Pane kulisser = new Pane();
+    kulisser.getChildren().add(labyrint);
     Scene scene = new Scene(kulisser);
-    teater.setTitle("RGB-farge");
+
+    teater.setTitle("Labyrint");
     teater.setScene(scene);
-    teater.show();*/
+    teater.show();
+  }
+  /*public void velge(Rute r){
+    if (r.merke!=' '){
+      statusinfo.setText("Denne ruten er opptatt; velg en annen.");
+      return;
+    } else{
+      statusinfo.setText("Velg en rute.");
+    }
+    r.settMerke('0');
+  }*/
+  public static void main(String[] args){
+    launch(args);
   }
 }
-
-//public static void main(String[] args) {
-//  launch(args);
-//}
