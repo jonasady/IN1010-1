@@ -19,6 +19,15 @@ import javafx.scene.text.Font;
 public class VisLabyrint extends Application{
   @Override
   public void start(Stage teater) {
+    Text statusinfo = new Text("Velg startrute.");
+    statusinfo.setFont(new Font(20));
+    statusinfo.setX(10);
+    statusinfo.setY(410);
+
+    Button stoppknapp = new Button("Stopp");
+    stoppknapp.setLayoutX(10); stoppknapp.setLayoutY(450);
+    Stoppbehandler stopp = new Stoppbehandler();
+    stoppknapp.setOnAction(stopp);
 
     GridPane labyrint = new GridPane();
     labyrint.setGridLinesVisible(true);
@@ -41,12 +50,10 @@ public class VisLabyrint extends Application{
         for (int i = 0; i<ant_kol;i++){
           Rute rute = new Rute(linje[i]);
           labyrint.add(rute,i,teller);
+    	    rute.setOnAction(klikk);
         }
         teller++;
       }
-
-      labyrint.add(new Text("#"),0,0);
-      labyrint.add(new Text("."),1,0);
 
       System.out.println("Hei verden.");
       //labyrint.setLayoutX(2);
@@ -54,7 +61,10 @@ public class VisLabyrint extends Application{
 	  }
     catch (Exception e) {}
     Pane kulisser = new Pane();
+    //kulisser.setPrefSize(4000, 5000);
     kulisser.getChildren().add(labyrint);
+    kulisser.getChildren().add(statusinfo);
+    kulisser.getChildren().add(stoppknapp);
     Scene scene = new Scene(kulisser);
 
     teater.setTitle("Labyrint");
