@@ -23,6 +23,18 @@ class Klikkbehandler implements EventHandler<ActionEvent>{
   public void handle(ActionEvent e){
     if (true){
       System.out.println("Klikket.");
+      System.out.println((Button)e.getSource());
+      System.out.println((Button)e.getTarget());
+
     }
   }
 }
+/*public void velge(Rute r){
+  if (r.merke!='.'){
+    statusinfo.setText("Denne ruten er svart, du kan ikke velge denne.");
+    return;
+  } else{
+    statusinfo.setText("Velg en rute.");
+  }
+  r.settMerke('s');
+}*/
