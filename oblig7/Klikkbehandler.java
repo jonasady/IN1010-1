@@ -19,22 +19,22 @@ import javafx.scene.text.Font;
 import javafx.event.*;
 
 class Klikkbehandler implements EventHandler<ActionEvent>{
+  Button tast = null;
   @Override
   public void handle(ActionEvent e){
-    if (true){
-      System.out.println("Klikket.");
-      System.out.println((Button)e.getSource());
-      System.out.println((Button)e.getTarget());
 
+    Button button = (Button)e.getSource();
+    String knappTekst = button.getText();
+    //System.out.println(knappTekst);
+    if (knappTekst.equals("#")){
+      System.out.println(knappTekst + ": Denne kan ikke velges.");
+    } else if (knappTekst.equals(".")){
+      System.out.println("Posisjonen til denne skal hentes ut.");
+      Integer colIndex = GridPane.getColumnIndex(button);
+      Integer rowIndex = GridPane.getRowIndex(button);
+      System.out.println(colIndex);
+      System.out.println(rowIndex);
+      
     }
   }
 }
-/*public void velge(Rute r){
-  if (r.merke!='.'){
-    statusinfo.setText("Denne ruten er svart, du kan ikke velge denne.");
-    return;
-  } else{
-    statusinfo.setText("Velg en rute.");
-  }
-  r.settMerke('s');
-}*/

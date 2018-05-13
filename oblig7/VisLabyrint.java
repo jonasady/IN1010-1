@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 
 public class VisLabyrint extends Application{
+  public File file = null;
 
   @Override
   public void start(Stage teater) {
@@ -29,20 +30,20 @@ public class VisLabyrint extends Application{
 
     Button stoppknapp = new Button("Stopp");
     stoppknapp.setFont(new Font(20));
-    stoppknapp.setLayoutX(250); stoppknapp.setLayoutY(0);
+    stoppknapp.setLayoutX(200); stoppknapp.setLayoutY(0);
     Stoppbehandler stopp = new Stoppbehandler();
     stoppknapp.setOnAction(stopp);
 
     GridPane labyrint = new GridPane();
     labyrint.setGridLinesVisible(true);
-    //labyrint.setLayoutX(0); labyrint.setLayoutY(50);
+    labyrint.setLayoutX(0); labyrint.setLayoutY(50);
 
     Klikkbehandler klikk = new Klikkbehandler();
 
-    File file = new FileChooser().showOpenDialog(teater);
+    this.file = new FileChooser().showOpenDialog(teater);
     Labyrint l = null;
     try{
-      l = Labyrint.lesFraFil(file);
+      l = Labyrint.lesFraFil(this.file);
       //System.out.println(l.toString());
 
       ArrayList<ArrayList<Rute>> rutenett = l.getLab();
@@ -58,33 +59,6 @@ public class VisLabyrint extends Application{
       }
     } catch (Exception e){}
 
-    /*try {
-      Scanner f = new Scanner(file);
-      String forsteLine = f.nextLine();
-      String[] splitLine = forsteLine.split(" ");
-      int ant_rad = Integer.parseInt(splitLine[0]);
-      int ant_kol = Integer.parseInt(splitLine[1]);
-      int teller =0;
-      //Rute[] brett = new Rute[(ant_rad*ant_kol)+1];
-
-      Klikkbehandler klikk = new Klikkbehandler();
-
-
-      while (f.hasNextLine()){
-        String[] linje = f.nextLine().split("");
-        for (int i = 0; i<ant_kol;i++){
-          Rute rute = new Rute(linje[i]);
-          labyrint.add(rute,i,teller);
-    	    rute.setOnAction(klikk);
-        }
-        teller++;
-      }
-
-      System.out.println("Hei verden.");
-      //labyrint.setLayoutX(2);
-      //labyrint.setLayoutY(2);
-	  }
-    catch (Exception e) {}*/
     Pane kulisser = new Pane();
 
     //kulisser.setPrefSize(4000, 5000);
@@ -96,18 +70,8 @@ public class VisLabyrint extends Application{
     teater.setTitle("Labyrint");
     teater.setScene(scene);
     teater.show();
-
   }
 
-  /*public void velge(Rute r){
-    if (r.merke!='.'){
-      statusinfo.setText("Denne ruten er svart, du kan ikke velge denne.");
-      return;
-    } else{
-      statusinfo.setText("Velg en rute.");
-    }
-    r.settMerke('s');
-  }*/
   /**
    * Konverterer losning-String fra oblig 5 til en boolean[][]-representasjon
    * av losningstien.
@@ -128,7 +92,7 @@ public class VisLabyrint extends Application{
       }
       return losning;
   }
-  
+
   public static void main(String[] args){
     launch(args);
   }
