@@ -26,6 +26,7 @@ public class VisLabyrint extends Application{
   private Labyrint l = null;
   public int ant_rad;
   public int ant_kol;
+  Text statusinfo;
   /**
    * Konverterer losning-String fra oblig 5 til en boolean[][]-representasjon
    * av losningstien.
@@ -76,11 +77,10 @@ public class VisLabyrint extends Application{
     if (knappTekst.equals("#")){
       System.out.println(knappTekst + ": Denne kan ikke velges.");
     } else if (knappTekst.equals(".")){
-      System.out.println("Posisjonen til denne skal hentes ut.");
       this.colIndex = GridPane.getColumnIndex(button);
       this.rowIndex = GridPane.getRowIndex(button);
       Liste<String> utveier = l.finnUtveiFra(this.colIndex, this.rowIndex);
-
+      statusinfo.setText("Det finnes " + utveier.stoerrelse() + " utvei(er).");
       boolean[][] bool_utvei = losningStringTilTabell(utveier.hent(0),ant_kol,ant_rad);
       for (int x = 0; x<ant_rad; x++){
         for (int y = 0; y<ant_kol; y++){
@@ -93,24 +93,17 @@ public class VisLabyrint extends Application{
       }
     }
   }
-
-  public ArrayList posisjon(){
-    ArrayList<Integer> liste = new ArrayList<Integer>();
-    liste.add(this.rowIndex);
-    liste.add(this.colIndex);
-    return liste;
-  }
 }
 
   @Override
   public void start(Stage teater) {
-    Text statusinfo = new Text("Velg startrute.");
-    statusinfo.setFont(new Font(20));
-    statusinfo.setX(20);
-    statusinfo.setY(20);
+    this.statusinfo = new Text("Velg startrute.");
+    this.statusinfo.setFont(new Font(18));
+    this.statusinfo.setX(0);
+    this.statusinfo.setY(20);
 
     Button stoppknapp = new Button("Stopp");
-    stoppknapp.setFont(new Font(20));
+    stoppknapp.setFont(new Font(18));
     stoppknapp.setLayoutX(200); stoppknapp.setLayoutY(0);
     Stoppbehandler stopp = new Stoppbehandler();
     stoppknapp.setOnAction(stopp);
@@ -124,8 +117,6 @@ public class VisLabyrint extends Application{
 
     try{
       this.l = Labyrint.lesFraFil(this.file);
-      //System.out.println(l.toString());
-
       ArrayList<ArrayList<Rute>> rutenett = this.l.getLab();
       this.ant_rad = rutenett.size();
       this.ant_kol = rutenett.get(0).size();
@@ -147,7 +138,7 @@ public class VisLabyrint extends Application{
     Pane kulisser = new Pane();
 
     kulisser.getChildren().add(this.labyrint);
-    kulisser.getChildren().add(statusinfo);
+    kulisser.getChildren().add(this.statusinfo);
     kulisser.getChildren().add(stoppknapp);
     Scene scene = new Scene(kulisser);
 

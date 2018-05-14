@@ -1,13 +1,14 @@
-Del A: Denne delen var egentlig ganske grei, men brukte nok 2-4 timer på dette.
+﻿Del A: Har brukt 5-6 timer på å få på plass rammene for programmet.
+Det tok en del tid å finne frem til de riktige JavaFX-metodene.
+Startet også med å ha Klikkbehandler i en egen fil, men det viste seg å bli problematisk
+når jeg skulle bruke labyrinten jeg hadde laget. 
 
-Del B: Her kopierte jeg en del fra en tidligere oblig der det også leses fra fil.
-Det vanskeligste her var å få på plass alle referansene til nabo-rutene. 3-4 timer.
+Fikk problemer med setGridLinesVisible, den gjorde det vanskelig å hente ut node fra labyrint.
+Den ga meg NullPointerException. Jeg satte derfor denne til false til slutt. 
 
-Del C: Ca. 4-5 timer brukt. Mye av tiden ble brukt på å tegne og tenke gjennom hva som skjer.
+Metoden getNodeFromGridPane tok også en del tid å finne ut av.
 
-Den vanskeligste delen var nok gaa-metoden. Den var ganske stor og stygg en stund...
-Og jeg fikk en del feilmeldinger med null-pointerException,
-fordi jeg ikke hadde laget referanse til labyrinten i alle rutene... Heldigvis fant jeg ut av det til slutt.
-Ble en del forvirring med kolonne og rad,
-siden filene hentet inn rad og kolonne og vi skulle skrive ut kolonne og rad..
-Feilmeldingene er god hjelp.
+Feilsøking har tatt minst 4 timer.
+
+Prøvde også å gjøre programmet litt penere, men det hjalp ikke så mye...
+Det var fint å få så tydelig feedback på hva som skjer, gøy å leke seg med innstillingene.
