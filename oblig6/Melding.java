@@ -1,4 +1,4 @@
-public class Melding{
+public class Melding implements Comparable<Melding>{
   String meld;
   int sekvens; //Nummeret som tilsvarer denne meldingen i rekka av meldinger.
   int id; //Kanalen den kommer fra.
@@ -22,5 +22,10 @@ public class Melding{
 
   public int getID(){
     return this.id;
+  }
+
+  @Override
+  public int compareTo(Melding sammenlign){
+    return (this.getSekvens() - sammenlign.getSekvens());
   }
 }

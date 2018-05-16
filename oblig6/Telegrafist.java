@@ -14,10 +14,13 @@ public class Telegrafist implements Runnable{
   public void run(){
     try{
       int kanalLengde = this.kanal.hentLengde();
-      for (int i = 0; i < kanalLengde; i++){
-        Melding meld = new Melding(this.kanal.lytt(),i,this.id);
+      String s = this.kanal.lytt();
+      int i = 0;
+      while (s != null){
+        Melding meld = new Melding(s,i,this.id);
         this.monitor.settInnMelding(meld);
-        //System.out.println("Melding satt inn av Telegrafist.");
+        s = kanal.lytt();
+        i++;
       }
       Melding meld = new Melding(null,kanalLengde,this.id);
       this.monitor.settInnMelding(meld);
