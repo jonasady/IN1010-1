@@ -1,0 +1,442 @@
+Hovedprogram.java
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+class Oblig5 {
+    public static void main(String[] args) {
+        String filnavn = null;
+
+        if (args.length > 0) {
+            filnavn = args[0];
+        } else {
+            System.out.println("FEIL! Riktig bruk av programmet: "
+                               +"java Oblig5 <labyrintfil>");
+            return;
+        }
+        File fil = new File(filnavn);
+        Labyrint l = null;
+        try {
+            l = Labyrint.lesFraFil(fil);
+        } catch (FileNotFoundException e) {
+            System.out.printf("FEIL: Kunne ikke lese fra '%s'\n", filnavn);
+            System.exit(1);
+        }
+
+        // les start-koordinater fra standard input
+        Scanner inn = new Scanner(System.in);
+        System.out.println("Skriv inn koordinater <kolonne> <rad> ('a' for aa avslutte)");
+        String[] ord = inn.nextLine().split(" ");
+        while (!ord[0].equals("a")) {
+
+            try {
+                int startKol = Integer.parseInt(ord[0]);
+                int startRad = Integer.parseInt(ord[1]);
+
+                Liste<String> utveier = l.finnUtveiFra(startKol, startRad);
+                if (utveier.stoerrelse() != 0) {
+                    for (String s : utveier) {
+                        System.out.println(s);
+                    }
+                } else {
+                    System.out.println("Ingen utveier.");
+                }
+                System.out.println();
+            } catch (NumberFormatException e) {
+                System.out.println("Ugyldig input!");
+            }
+
+            System.out.println("Skriv inn nye koordinater ('a' for aa avslutte)");
+            ord = inn.nextLine().split(" ");
+        }
+    }
+}
+
+Kanal.java
+import java.util.Random;
+
+/**
+ * Klasse som representerer en kanal/telegraflinje hvor det overføres krypterte
+ * meldinger.
+ */
+public final class Kanal {
+    private Random r;
+    private int antall;
+    private int total;
+    private String[] meldinger;
+    private int id;
+
+    Kanal(String[] meldinger, int id) {
+        this.r = new Random();
+        this.meldinger = meldinger;
+        this.total = meldinger.length;
+        this.id = id;
+    }
+
+    /**
+     * Returnerer kanalens id: et unikt, positivt heltall
+     * @return kanalens id
+     */
+    public int hentId() {
+        return id;
+    }
+
+    public int hentLengde(){
+      return total;
+    }
+
+    /**
+     * <p>Returnerer neste melding. Hvis kanalen er stengt for videre
+     * kommunikasjon, returneres <tt>null</tt>.</p>
+     *
+     * <p><b>NB:</b> Denne metoden er ikke <i>thread-safe</i>!</p>
+     * @return neste melding
+     */
+    public String lytt() {
+        if (antall == total) {
+            return null;
+        }
+        try {
+            int tid = r.nextInt(100);
+            Thread.currentThread().sleep(tid);
+        } catch (InterruptedException e) {}
+
+        return Kryptografi.krypter(meldinger[antall++]);
+    }
+}
+
+Telegrafist.java
+public class Telegrafist implements Runnable{
+  int id;
+  private Monitor monitor;
+  private int lyttetTil = 0;
+  private Kanal kanal;
+
+  Telegrafist(Monitor monitor, int id, Kanal kanal){
+    this.monitor = monitor;
+    this.id = id;
+    this.kanal = kanal;
+  }
+
+  @Override
+  public void run(){
+    try{
+      int kanalLengde = this.kanal.hentLengde();
+      String s = this.kanal.lytt();
+      int i = 0;
+      while (s != null){
+        Melding meld = new Melding(s,i,this.id);
+        this.monitor.settInnMelding(meld);
+        s = kanal.lytt();
+        i++;
+      }
+      Melding meld = new Melding(null,kanalLengde,this.id);
+      this.monitor.settInnMelding(meld);
+    } catch (InterruptedException e){
+      System.out.println("Stopp i run for telegrafist."); //For aa vite hvor det stopper.
+    }
+  }
+}
+
+Monitor.java
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.ArrayList;
+
+public class Monitor{
+  private Lock monitorlas = new ReentrantLock();
+  private Condition ikkeTomMonitor = monitorlas.newCondition();
+  private Condition ikkeFullMonitor = monitorlas.newCondition();
+  private int antallMeldinger = 0;
+  private ArrayList<Melding> ListeMeldinger = new ArrayList<Melding>();
+  private int antallSendere;
+  private int antallNull=0;
+
+  Monitor(int antallSendere){
+    this.antallSendere=antallSendere;
+  }
+
+  int antMeld(){
+    return this.antallMeldinger;
+  }
+
+  void settInnMelding(Melding meld) throws InterruptedException{
+    monitorlas.lock();
+    try {
+      if (meld.getMelding()==null){
+        this.antallNull++;
+        return;
+      }
+      ListeMeldinger.add(meld);
+      antallMeldinger++;
+      ikkeTomMonitor.signalAll(); //Sier fra til operatoer.
+    }
+    finally {monitorlas.unlock();}
+  }
+
+  Melding henteUtMelding() throws InterruptedException{
+    monitorlas.lock();
+    Melding meld;
+    try {
+      if ((this.antallNull==this.antallSendere) && (antallMeldinger == 0)){
+        return null;
+      }
+      while (antallMeldinger == 0){ //Ikke mulig aa hente ut melding naar det ikke er noen.
+        ikkeTomMonitor.await();
+      }
+      meld = ListeMeldinger.get(0);
+      ListeMeldinger.remove(0);
+      antallMeldinger --;
+      ikkeFullMonitor.signalAll(); //Sier fra at det er plass til flere meldinger.
+    }
+    finally {monitorlas.unlock();}
+    return meld;
+  }
+}
+
+Melding.java
+public class Melding implements Comparable<Melding>{
+  String meld;
+  int sekvens; //Nummeret som tilsvarer denne meldingen i rekka av meldinger.
+  int id; //Kanalen den kommer fra.
+  Melding(String melding, int sekvens, int id){
+    this.meld = melding;
+    this.sekvens = sekvens;
+    this.id = id;
+  }
+
+  public String getMelding(){
+    return this.meld;
+  }
+
+  public void settMelding(String meld){
+    this.meld = meld;
+  }
+
+  public int getSekvens(){
+    return this.sekvens;
+  }
+
+  public int getID(){
+    return this.id;
+  }
+
+  @Override
+  public int compareTo(Melding sammenlign){
+    return (this.getSekvens() - sammenlign.getSekvens());
+  }
+}
+
+Kryptograf.java
+public class Kryptograf implements Runnable{
+  private Monitor kryptertMonitor;
+  private Monitor dekryptertMonitor;
+  private int dekryptert = 0;
+  private int kryptert = 0;
+
+  Kryptograf(Monitor kryptertMonitor, Monitor dekryptertMonitor){
+    this.kryptertMonitor = kryptertMonitor;
+    this.dekryptertMonitor = dekryptertMonitor;
+  }
+
+  @Override
+  public void run(){
+    try{
+      Melding meld = kryptertMonitor.henteUtMelding();
+      while(meld != null) {
+        String tekst = meld.getMelding();
+        Melding ny = new Melding(Kryptografi.dekrypter(tekst),meld.getSekvens(),meld.getID());
+        this.kryptert++;
+        this.dekryptertMonitor.settInnMelding(ny);
+        meld = kryptertMonitor.henteUtMelding();
+      }
+      Melding meld_slutt = new Melding(null,-1,-1);
+      this.dekryptertMonitor.settInnMelding(meld_slutt);
+    } catch (InterruptedException e){
+      System.out.println("Stopp i run for Kryptograf");
+    }
+  }
+}
+
+Kryptografi.java
+/**
+ * Klasse med metode for dekryptering av meldinger.
+ */
+public class Kryptografi {
+    private static int offset = 3;
+    private static int VENTETID_PER_BOKSTAV = 10;
+
+    private Kryptografi() {}
+
+    static String krypter(String s) {
+        //String s = m.s;
+        char[] klartekst = s//.replace(" ", "").toUpperCase()
+                            .toCharArray();
+        int antallTegn = klartekst.length;
+        int n = finnN(antallTegn);
+        char[] chiffertekst = new char[antallTegn];
+
+        int initiell, j=0;
+        for (int runde=0; runde < n; runde++) {
+            initiell = runde;
+            for (int i = initiell; i < antallTegn; i += n) {
+                chiffertekst[i] = klartekst[j++];
+            }
+        }
+        return new String(chiffertekst);
+    }
+
+    /**
+     * Dekrypterer innholdet i <tt>s</tt> og returnerer det.
+     * @param s     en kryptert streng
+     * @return      det dekrypterte innholdet i strengen
+     */
+    public static String dekrypter(String s) {
+        //String s = m.s;
+        char[] chiffertekst = s.toCharArray();
+        int antallTegn = chiffertekst.length;
+        int n = finnN(antallTegn);
+        char[] klartekst = new char[antallTegn];
+        int initiell, j=0;
+        for (int runde=0; runde < n; runde++) {
+            initiell = runde;
+
+            for (int i = initiell; i < antallTegn; i += n) {
+                klartekst[j++] = chiffertekst[i];
+                try {
+                    Thread.sleep(VENTETID_PER_BOKSTAV);
+                } catch (InterruptedException e) {
+
+                }
+                // bør legge inn litt ekstra venting her
+            }
+        }
+        /*
+        System.out.printf("Kryptert: '%s'. Dekryptert: '%s'\n",
+                          m.s, new String(klartekst));
+        */
+        return new String(klartekst);
+    }
+
+    private static int finnN(int antallTegn) {
+        return (int) Math.sqrt(antallTegn);
+    }
+}
+
+Operasjonsleder.java
+import java.io.PrintWriter;
+import java.io.File;
+import java.util.*;
+import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+
+public class Operasjonsleder implements Runnable{
+  private Monitor dekryptertMonitor;
+  private int dekryptert = 0;
+  private ArrayList<Melding> ListeMeldinger = new ArrayList<Melding>();
+
+  Operasjonsleder(Monitor dekryptertMonitor){
+    this.dekryptertMonitor = dekryptertMonitor;
+  }
+
+  @Override
+  public void run(){
+    try{
+      Melding meld=this.dekryptertMonitor.henteUtMelding();
+      while (meld !=null){
+        ListeMeldinger.add(meld);
+        meld=this.dekryptertMonitor.henteUtMelding();
+      }
+    } catch (InterruptedException  e){
+      System.out.println("Stopp i run for Kryptograf"); //For aa vite hvor det stopper.
+    }
+    this.skrivTilFiler();
+  }
+
+  private void skrivTilFiler(){
+    ArrayList<Integer> ListeOverID = new ArrayList<Integer>();
+    for (int i = 0; i<ListeMeldinger.size(); i++){
+      Integer tempID = ListeMeldinger.get(i).getID();
+      if (ListeOverID.contains(tempID)==false){
+        ListeOverID.add(tempID);
+      }
+    }
+    Collections.sort(ListeMeldinger);
+    try{
+      ArrayList<PrintWriter> ListePrintWriter = new ArrayList<PrintWriter>();
+      for (int i = 0; i<ListeOverID.size();i++){
+        PrintWriter printWriter = new PrintWriter("file_"+i+".txt", "utf-8");
+        ListePrintWriter.add(printWriter);
+      }
+      for (int i = 0; i<ListeMeldinger.size(); i++){
+        Melding tempMeld = ListeMeldinger.get(i);
+        ListePrintWriter.get(tempMeld.getID()).println(tempMeld.getMelding());
+      }
+      for (int i = 0; i<ListePrintWriter.size();i++){
+        ListePrintWriter.get(i).close();
+      }
+    } catch (FileNotFoundException | UnsupportedEncodingException e){
+      System.out.println("Ingen fil funnet eller ikke riktig kode.");
+    }
+  }
+}
+
+Operasjonssentral.java
+/**
+ * Klasse som oppretter <tt>Kanal</tt>-objektene og lar dem bli hentet ut..
+ */
+public class Operasjonssentral {
+    private static int MAKS_KANALER = Tekster.ANTALL_TEKSTER;
+    private int antallKanaler;
+
+    /**
+     * Oppretter en ny operasjonssentral med inntil <tt>maksKanaler</tt>
+     * kanaler.
+     * @param maksKanaler maksimalt antall kanaler
+     */
+    public Operasjonssentral(int maksKanaler) {
+        if (maksKanaler <= Tekster.ANTALL_TEKSTER) {
+            antallKanaler = maksKanaler;
+        } else {
+            System.out.printf("Kan ikke lytte på mer enn %d kanaler\n",
+                              MAKS_KANALER);
+            antallKanaler = MAKS_KANALER;
+        }
+    }
+
+    /**
+     * Returnerer antall kanaler
+     * @return antall kanaler
+     */
+    public int hentAntallKanaler() {
+        return antallKanaler;
+    }
+
+    /**
+     * Returnerer et array med kanalene det lyttes på.
+     * @return array med kanalene
+     */
+    public Kanal[] hentKanalArray() {
+        Kanal[] kanalene = new Kanal[antallKanaler];
+        for (int i = 0; i < antallKanaler; i++) {
+            kanalene[i] = new Kanal(Tekster.tekster[i], i+1);
+        }
+        return kanalene;
+    }
+}
+
+Tekster.java
+class Tekster {
+    static String[] dukkehjem = {
+    "NORA. I natt sover jeg ikke.",
+    "HELMER. Men, kjære Nora -"};
+    static String[] grunnloven = {
+    "Kongeriket Norges Grunnlov gitt i riksforsamlingen på Eidsvoll den 17. mai 1814, slik den lyder etter senere endringer, senest grunnlovsvedtak av 13. mai 2014.",
+    "A. Om statsformen"};
+    static String[] ojd = {
+    "Ole-Johan Dahl (October 12, 1931 / June 29, 2002) was a Norwegian computer scientist and is considered to be the father of Simula and object-oriented programming, together with Kristen Nygaard."};
+    static String[][] tekster = {ojd, dukkehjem, grunnloven};
+    static int ANTALL_TEKSTER = tekster.length;
+}

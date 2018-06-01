@@ -1,0 +1,328 @@
+Resept.java
+abstract class Resept{
+  static int countID=0;
+  int id;
+  Legemiddel refLegemiddel;
+  Lege refLege;
+  int idPasient;
+  int reit;
+
+  public Resept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    this.refLegemiddel = legemiddel;
+    this.refLege = utskrivendeLege;
+    this.idPasient = pasientId;
+    this.reit = reit;
+    this.countID++;
+    this.id=countID;
+  }
+
+  public int hentId(){
+    return this.id;
+  }
+
+  public String hentLegemiddel(){
+    return refLegemiddel.hentNavn();
+  }
+
+  public String hentLege(){
+    return refLege.henteNavn();
+  }
+
+  public int hentPasientId(){
+    return this.idPasient;
+  }
+
+  public int hentReit(){
+    return this.reit;
+  }
+
+  public boolean bruk(){/*Forsoker aa bruke resept? try-setn.?*/
+    if (reit>0){
+      reit--;
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  abstract public String farge();
+  abstract public double prisAaBetale();
+}
+
+HvitResept.java
+abstract class HvitResept extends Resept{
+  public HvitResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    super(legemiddel, utskrivendeLege, pasientId, reit);
+  }
+  public String farge(){
+    return "hvit";
+  }
+}
+
+BlaaResept.java
+class BlaaResept extends Resept{
+  public BlaaResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    super(legemiddel, utskrivendeLege, pasientId, reit);
+  }
+  public String farge(){
+    return "blaa";
+  }
+  public double prisAaBetale(){
+    double fullPris=refLegemiddel.hentPris(); /*Skal ha 75% avslag.*/
+    return 0.25*fullPris;
+  }
+}
+
+PResept.java
+class PResept extends HvitResept{
+  public PResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId){
+    super(legemiddel, utskrivendeLege, pasientId, 3);
+  }
+  public double prisAaBetale(){
+    double fullPris=refLegemiddel.hentPris(); /*Skal ha 116 kr i avslag.*/
+    if (fullPris<=116.00){
+      return 0.00;
+    }
+    else{
+      return (fullPris-116.00);
+    }
+  }
+}
+
+MilitaerResept.java
+class MilitaerResept extends HvitResept{
+  public MilitaerResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    super(legemiddel, utskrivendeLege, pasientId, reit);
+  }
+  public double prisAaBetale(){ /*Skal vaere gratis.*/
+    return 0.00;
+  }
+}
+
+Lege.java
+class Lege{
+  String navn;
+
+  public Lege(String navn){
+    this.navn = navn;
+  }
+
+  public String henteNavn(){
+    return navn;
+  }
+}
+
+Fastlege.java
+class Fastlege extends Lege implements Kommuneavtale{
+  String navn;
+  int avtalenummer;
+
+  public Fastlege(String navn, int avtalenummer){
+    super(navn);
+    this.avtalenummer = avtalenummer;
+  }
+
+  @Override
+    public int hentAvtalenummer(){
+      return this.avtalenummer;
+    }
+}
+
+Kommuneavtale.java
+interface Kommuneavtale{
+  public int hentAvtalenummer();
+}
+
+Legemiddel.java
+abstract class Legemiddel{
+  static int countID=0;
+  int id;
+  String navn;
+  double pris;
+  double virkestoff; /*I [mg]*/
+  public Legemiddel(String navn, double startpris, double virkestoff){
+    this.navn = navn;
+    this.pris = startpris;
+    this.virkestoff = virkestoff;
+    this.countID++;
+    this.id=countID;
+  }
+  public int hentId(){
+    return this.id;
+  }
+  public String hentNavn(){
+    return this.navn;
+  }
+  public double hentPris(){
+    return this.pris;
+  }
+  public double hentVirkestoff(){
+    return this.virkestoff;
+  }
+  public void settNyPris(double pris){
+    this.pris=pris;
+  }
+  public void skrivUtInfo(){ /*Lager en metode for aa lettere hente ut info lagret om legemidlene.*/
+    System.out.println("\nLegemiddelets ID: "+this.hentId());
+    System.out.println("Legemiddelets navn: "+this.hentNavn());
+    System.out.println("Legemiddelets pris [kr]: "+this.hentPris());
+    System.out.println("Mengde virkestoff [mg] i legemiddelet: "+this.hentVirkestoff());
+  }
+}
+
+LegemiddelA.java
+class LegemiddelA extends Legemiddel{
+  int styrke; /*Narkotisk styrke*/
+  public LegemiddelA(String navn, double startpris, double virkestoff, int styrke){
+    super(navn,startpris,virkestoff);
+    this.styrke=styrke;
+  }
+  public int hentNarkotiskStyrke(){
+    return this.styrke;
+  }
+  @Override
+  public void skrivUtInfo(){ /*Lager en metode for aa lettere hente ut info lagret om legemidlene.*/
+    System.out.println("\nLegemiddelets ID: "+this.hentId());
+    System.out.println("Legemiddelets navn: "+this.hentNavn());
+    System.out.println("Legemiddelets pris [kr]: "+this.hentPris());
+    System.out.println("Mengde virkestoff [mg] i legemiddelet: "+this.hentVirkestoff());
+    System.out.println("Legemiddelets narkotiske styrke: "+this.hentNarkotiskStyrke());
+  }
+}
+
+LegemiddelB.java
+class LegemiddelB extends Legemiddel{
+  int styrke; /*Vanedannende styrke*/
+  public LegemiddelB(String navn, double startpris, double virkestoff, int styrke){
+    super(navn,startpris,virkestoff);
+    this.styrke=styrke;
+  }
+  public int hentVanedannendeStyrke(){
+    return this.styrke;
+  }
+  @Override
+  public void skrivUtInfo(){ /*Lager en metode for aa lettere hente ut info lagret om legemidlene.*/
+    System.out.println("\nLegemiddelets ID: "+this.hentId());
+    System.out.println("Legemiddelets navn: "+this.hentNavn());
+    System.out.println("Legemiddelets pris [kr]: "+this.hentPris());
+    System.out.println("Mengde virkestoff [mg] i legemiddelet: "+this.hentVirkestoff());
+    System.out.println("Legemiddelets vanedannende styrke: "+this.hentVanedannendeStyrke());
+  }
+}
+
+LegemiddelC.java
+class LegemiddelC extends Legemiddel{
+  public LegemiddelC(String navn, double startpris, double virkestoff){
+    super(navn,startpris,virkestoff);
+  }
+}
+
+Integrasjonstest.java
+class Integrasjonstest{
+  public static void main(String[] args){
+    /*Lager en instans av hver klasse for legemiddel*/
+    LegemiddelA LMA = new LegemiddelA("Kokain",1000.00,50.00,6);
+    LegemiddelB LMB = new LegemiddelB("Vicodin",299.00,60.00,5);
+    LegemiddelC LMC = new LegemiddelC("Ibux",199.00,500.00);
+
+    /*Lager en instans av hver klasse for lege*/
+    Lege L1 = new Lege("BLA BLA");
+    Fastlege L2 = new Fastlege("HE HE",42);
+
+    /*Lager en instans av hver klasse for resept*/
+    BlaaResept BR1 = new BlaaResept(LMA,L1,9090,10); /*Denne refererer til ikke-fastlege*/
+    MilitaerResept MR1 = new MilitaerResept(LMA,L2,9090,10);
+    PResept PR1 = new PResept(LMA,L2,9090);
+
+    /*Skriver ut ID, navn, pris, virkestoff og narkotisk styrke for legemiddel A*/
+    LMA.skrivUtInfo();
+
+    /*Skriver ut ID, navn, pris, virkestoff og vanedannende styrke for legemiddel B*/
+    LMB.skrivUtInfo();
+
+    /*Skriver ut ID, navn, pris, virkestoff og narkotisk styrke for legemiddel A*/
+    LMC.skrivUtInfo();
+
+    /*Skriver ut info om legene*/
+    System.out.println("\nNavn, lege 1: "+L1.henteNavn());
+    System.out.println("Navn, lege 2: "+L2.henteNavn());
+    System.out.println("Avtalenummer: "+L2.hentAvtalenummer());
+    /*System.out.println("Avtalenummer: "+L1.hentAvtalenummer()); Denne gaar ikke, siden L1 ikke er fastlege.*/
+
+    /*Skriver ut info om reseptene. En litt annen loesning enn over.*/
+    Resept[] resepter = {BR1,MR1,PR1};
+    for (Resept item : resepter){
+      System.out.println("\nResept-ID: "+item.hentId());
+      System.out.println("Resept, legemiddel: "+item.hentLegemiddel());
+      System.out.println("Resept, utskrivende lege: "+item.hentLege());
+      System.out.println("Resept, pasient-ID: "+item.hentPasientId());
+      System.out.println("Antall gjenvaerende ganger: "+item.hentReit());
+      if ((item instanceof BlaaResept) || (item instanceof HvitResept)){
+        System.out.println("Resept, fargeklasse: "+item.farge());
+        System.out.println("Pris for legemiddel: "+item.prisAaBetale());
+        /*Skrive dette inn i klassen?? Som egen metode.*/
+      }
+    }
+  }
+}
+
+TestLegemiddel.java
+class TestLegemiddel{
+  public static void main(String[] args){
+    LegemiddelA LMA = new LegemiddelA("Kokain",1000.00,50.00,6);
+    LegemiddelB LMB = new LegemiddelB("Vicodin",299.00,60.00,5);
+    LegemiddelC LMC = new LegemiddelC("Ibux",199.00,500.00);
+
+    /*Tester Legemiddel A:*/
+    LMA.skrivUtInfo();
+    LMA.settNyPris(500.00);/*Setter ny pris til 500.00*/
+    LMA.skrivUtInfo();
+
+    /*Tester Legemiddel B:*/
+    LMB.skrivUtInfo();
+    LMB.settNyPris(400.00); /*Setter ny pris til 400.00*/
+    LMB.skrivUtInfo();
+
+    /*Tester Legemiddel C:*/
+    LMC.skrivUtInfo();
+    LMC.settNyPris(300.00); /*Setter ny pris til 300.00*/
+    LMC.skrivUtInfo();
+
+  }
+}
+
+TestResepter.java
+class TestResepter{
+  public static void main(String[] args){
+    LegemiddelA LMA = new LegemiddelA("Kokain",1000.00,50.00,6);
+    LegemiddelB LMB = new LegemiddelB("Vicodin",299.00,60.00,5);
+    LegemiddelC LMC = new LegemiddelC("Ibux",199.00,500.00);
+
+    Lege Lege1 = new Lege("Lege Eirin");
+
+    /*Tester BlaaResept:*/
+    BlaaResept BR1 = new BlaaResept(LMA,Lege1,9090,10);
+    if (BR1.prisAaBetale() == 0.25*LMA.hentPris()){
+      System.out.println("BR1, pris = riktig.");
+    }
+    else{
+      System.out.println("BR1, pris = feil.");
+    }
+    assert (BR1.prisAaBetale() == (0.75*LMA.hentPris())) : "Noe er galt med prisen.";
+    System.out.println(BR1.farge());
+    System.out.println(BR1.prisAaBetale());
+
+    /*Tester MilitaerResept:*/
+    MilitaerResept MR1 = new MilitaerResept(LMA,Lege1,9090,10);
+
+    System.out.println(MR1.farge());
+    System.out.println(MR1.prisAaBetale());
+    assert (MR1.prisAaBetale() == 0) : "Pris aa betale er feil";
+
+    /*Tester P-Resept:*/
+    PResept PR1 = new PResept(LMA,Lege1,9090);
+    System.out.println(PR1.farge());
+    System.out.println(PR1.prisAaBetale());
+  }
+}

@@ -1,0 +1,515 @@
+Pasient.java
+class Pasient{
+  String navn;
+  String fodselsnr;
+  int id;
+  int antNark;
+  Lenkeliste<Resept> reseptliste = new Stabel<Resept>();
+
+  public Pasient(String navn, String fodselsnr){
+    this.navn = navn;
+    this.fodselsnr = fodselsnr;
+  }
+
+  public int hentID(){
+    return this.id;
+  }
+
+  public void leggPaa(Resept x){
+    this.reseptliste.leggTil(x);
+    if (x.hentHeleLegemiddel() instanceof LegemiddelA){
+      antNark++;
+    }
+  }
+
+  public Lenkeliste<Resept> hentUt(){
+    return this.reseptliste;
+  }
+
+  public String hentNavn(){
+    return this.navn;
+  }
+
+  public String hentFodselsnr(){
+    return this.fodselsnr;
+  }
+
+  public int hentAntNarkResepter(){
+    return antNark;
+  }
+}
+
+Resept.java
+abstract class Resept{
+  static int countID=0;
+  int id;
+  Legemiddel refLegemiddel;
+  Lege refLege;
+  int pasientId;
+  int reit;
+
+  public Resept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    this.refLegemiddel = legemiddel;
+    this.refLege = utskrivendeLege;
+    this.pasientId = pasientId;
+    this.reit = reit;
+    this.id=countID;
+    this.countID++;
+  }
+
+  public int hentId(){
+    return this.id;
+  }
+
+  public Legemiddel hentHeleLegemiddel(){
+    return this.refLegemiddel;
+  }
+
+  public String hentLegemiddel(){
+    return refLegemiddel.hentNavn();
+  }
+
+  public String hentLege(){
+    return refLege.hentNavn();
+  }
+
+  public int hentPasientId(){
+    return this.pasientId;
+  }
+
+  public int hentReit(){
+    return this.reit;
+  }
+
+  public boolean bruk(){/*Forsoker aa bruke resept? try-setn.?*/
+    if (reit>0){
+      reit--;
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  abstract public String farge();
+  abstract public double prisAaBetale();
+}
+
+HvitResept.java
+abstract class HvitResept extends Resept{
+  public HvitResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    super(legemiddel, utskrivendeLege, pasientId, reit);
+  }
+  public String farge(){
+    return "hvit";
+  }
+}
+ PResept.java
+ class PResept extends HvitResept{
+   public PResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId){
+     super(legemiddel, utskrivendeLege, pasientId, 3);
+   }
+   public double prisAaBetale(){
+     double fullPris=refLegemiddel.hentPris(); /*Skal ha 116 kr i avslag.*/
+     if (fullPris<=116.00){
+       return 0.00;
+     }
+     else{
+       return (fullPris-116.00);
+     }
+   }
+ }
+
+MilitaerResept.java
+class MilitaerResept extends HvitResept{
+  public MilitaerResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    super(legemiddel, utskrivendeLege, pasientId, reit);
+  }
+  public double prisAaBetale(){ /*Skal vaere gratis.*/
+    return 0.00;
+  }
+}
+
+BlaaResept.java
+class BlaaResept extends Resept{
+  public BlaaResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+    super(legemiddel, utskrivendeLege, pasientId, reit);
+  }
+  public String farge(){
+    return "blaa";
+  }
+  public double prisAaBetale(){
+    double fullPris=refLegemiddel.hentPris(); /*Skal ha 75% avslag.*/
+    return 0.25*fullPris;
+  }
+}
+
+Lege.java
+class Lege implements Comparable<Lege>{
+  String navn;
+  int antNark = 0;
+  Lenkeliste<Resept> utskrevneResepter = new Lenkeliste<Resept>();
+
+  public Lege(String navn){
+    this.navn = navn;
+  }
+
+  public String hentNavn(){
+    return this.navn;
+  }
+
+  @Override
+  public int compareTo(Lege annenLege){
+    return (this.navn.compareTo(annenLege.hentNavn()));
+  }
+
+  public void skrivResept(Resept x){
+    this.utskrevneResepter.leggTil(x);
+    if (x.hentHeleLegemiddel() instanceof LegemiddelA){
+      antNark++;
+    }
+  }
+
+  public Lenkeliste<Resept> hentUtskrevneResepter(){
+    return this.utskrevneResepter;
+  }
+
+  public int hentAntNarkResepter(){
+    return antNark;
+  }
+}
+
+Fastlege.java
+class Fastlege extends Lege implements Kommuneavtale{
+  String navn;
+  int avtalenummer;
+
+  public Fastlege(String navn, int avtalenummer){
+    super(navn);
+    this.avtalenummer = avtalenummer;
+  }
+
+  @Override
+  public int hentAvtalenummer(){
+    return this.avtalenummer;
+  }
+}
+
+Kommuneavtale.java
+interface Kommuneavtale{
+  public int hentAvtalenummer();
+}
+
+Legemiddel.java
+abstract class Legemiddel{
+  static int countID=0;
+  int id;
+  String navn;
+  double pris;
+  double virkestoff; /*I [mg]*/
+
+  public Legemiddel(String navn, double startpris, double virkestoff){
+    this.navn = navn;
+    this.pris = startpris;
+    this.virkestoff = virkestoff;
+    this.countID++;
+    this.id=countID;
+  }
+
+  public int hentId(){
+    return this.id;
+  }
+
+  public String hentNavn(){
+    return this.navn;
+  }
+
+  public double hentPris(){
+    return this.pris;
+  }
+
+  public double hentVirkestoff(){
+    return this.virkestoff;
+  }
+
+  public void settNyPris(double pris){
+    this.pris=pris;
+  }
+
+  public void skrivUtInfo(){ /*Lager en metode for aa lettere hente ut info lagret om legemidlene.*/
+    System.out.println("\nLegemiddelets ID: "+this.hentId());
+    System.out.println("Legemiddelets navn: "+this.hentNavn());
+    System.out.println("Legemiddelets pris [kr]: "+this.hentPris());
+    System.out.println("Mengde virkestoff [mg] i legemiddelet: "+this.hentVirkestoff());
+  }
+}
+
+LegemiddelA.java
+class LegemiddelA extends Legemiddel{
+  int styrke; /*Narkotisk styrke*/
+
+  public LegemiddelA(String navn, double startpris, double virkestoff, int styrke){
+    super(navn,startpris,virkestoff);
+    this.styrke=styrke;
+  }
+
+  public int hentNarkotiskStyrke(){
+    return this.styrke;
+  }
+
+  @Override
+  public void skrivUtInfo(){ /*Lager en metode for aa lettere hente ut info lagret om legemidlene.*/
+    System.out.println("\nLegemiddelets ID: "+this.hentId());
+    System.out.println("Legemiddelets navn: "+this.hentNavn());
+    System.out.println("Legemiddelets pris [kr]: "+this.hentPris());
+    System.out.println("Mengde virkestoff [mg] i legemiddelet: "+this.hentVirkestoff());
+    System.out.println("Legemiddelets narkotiske styrke: "+this.hentNarkotiskStyrke());
+  }
+}
+
+LegemiddelB.java
+class LegemiddelB extends Legemiddel{
+  int styrke; /*Vanedannende styrke*/
+
+  public LegemiddelB(String navn, double startpris, double virkestoff, int styrke){
+    super(navn,startpris,virkestoff);
+    this.styrke=styrke;
+  }
+
+  public int hentVanedannendeStyrke(){
+    return this.styrke;
+  }
+  @Override
+  public void skrivUtInfo(){ /*Lager en metode for aa lettere hente ut info lagret om legemidlene.*/
+    System.out.println("\nLegemiddelets ID: "+this.hentId());
+    System.out.println("Legemiddelets navn: "+this.hentNavn());
+    System.out.println("Legemiddelets pris [kr]: "+this.hentPris());
+    System.out.println("Mengde virkestoff [mg] i legemiddelet: "+this.hentVirkestoff());
+    System.out.println("Legemiddelets vanedannende styrke: "+this.hentVanedannendeStyrke());
+  }
+}
+
+LegemiddelC.java
+class LegemiddelC extends Legemiddel{
+
+  public LegemiddelC(String navn, double startpris, double virkestoff){
+    super(navn,startpris,virkestoff);
+  }
+}
+
+Liste.java
+interface Liste<T> extends Iterable<T>{
+  public int stoerrelse();
+  public void leggTil(int pos, T x);
+  public void leggTil(T x);
+  public void sett(int pos, T x);
+  public T hent(int pos);
+  public T fjern(int pos);
+  public T fjern();
+}
+
+Lenkeliste.java //med iterator
+import java.util.Iterator;
+
+class Lenkeliste<T> implements Liste<T>{
+  public class Node{
+    Node neste = null;
+    T data;
+
+    Node(T x){ /*Nodens konstruktoer*/
+      this.data = x;
+    }
+  }
+  public Node start = new Node(null);
+
+  public class LenkelisteIterator implements Iterator<T>{
+    private Liste<T> minListe;
+    private int indeks = 0;
+
+    public LenkelisteIterator(Liste<T> lx){
+      minListe = lx;
+    }
+
+    @Override
+    public boolean hasNext(){
+      return indeks<minListe.stoerrelse();
+    }
+
+    @Override
+    public T next(){
+      return minListe.hent(indeks++);
+    }
+
+    @Override
+    public void remove(){ /*Implementerer ikke denne.*/
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  public LenkelisteIterator iterator(){
+    return new LenkelisteIterator(this);
+  }
+
+  @Override /*Foerst inn, foerst ut = queue.*/
+  public void leggTil(T x){
+    if (start.neste == null){ /*Sjekker om lista er tom.*/
+      start.neste = new Node(x);
+    }
+    else{
+      Node p = start;
+      while (p.neste != null){ /*Finner siste sted i lista.*/
+        p = p.neste;
+      }
+      p.neste = new Node(x);
+    }
+  }
+
+  @Override
+  public T fjern(){
+    if (start.neste==null){
+      throw new UgyldigListeIndeks(-1);
+    }
+    else{
+      Node p = start.neste;
+      start.neste = p.neste;
+      return p.data;
+    }
+  }
+
+  @Override
+  public void sett(int pos, T x){
+    if (pos<0 || pos>=this.stoerrelse()){
+      throw new UgyldigListeIndeks(pos);
+    }
+    Node p = start;
+    for (int i = 0; i < pos; i++){
+      p = p.neste;
+    }
+    p.neste.data = x;
+  }
+
+  @Override
+  public void leggTil(int pos, T x){
+    if (pos<0 || pos > this.stoerrelse()){
+      throw new UgyldigListeIndeks(pos);
+    }
+    if (pos==0){
+      Node p = new Node(x);
+      p.neste = start.neste;
+      start.neste = p;
+    }
+    else{
+      Node p = start;
+      for (int i = 0; i < pos; i++){
+        p = p.neste;
+      }
+      Node ny = new Node(x);
+      ny.neste=p.neste;
+      p.neste=ny;
+    }
+  }
+
+  @Override
+  public T fjern(int pos){
+    if (pos<0 || pos>=this.stoerrelse()){
+      throw new UgyldigListeIndeks(pos);
+    }
+    Node p = start;
+    for (int i = 0; i < pos; i++){
+      p = p.neste;
+    }
+    Node fjernes = p.neste;
+    p.neste = fjernes.neste;
+    return fjernes.data;
+  }
+
+  @Override
+  public int stoerrelse(){
+    Node p = start;
+    int n = 0;
+    while (p.neste != null){
+      n++;
+      p = p.neste;
+    }
+    return n;
+  } /*Kan lage en egen variabel for stoerrelse.*/
+
+  @Override
+  public T hent(int pos){
+    if (pos<0 || pos>=this.stoerrelse()){
+      throw new UgyldigListeIndeks(pos);
+    }
+    Node p = start.neste;
+    for (int i = 0; i < pos; i++){
+      p = p.neste;
+    }
+    return p.data;
+  }
+}
+
+SortertLenkeliste.java
+class SortertLenkeliste<T extends Comparable<T>> extends Lenkeliste<T>{
+  public SortertLenkeliste(){
+    super();
+  }
+
+  @Override
+  public void leggTil(T x){
+    if (start.neste == null){ /*Sjekker om lista er tom.*/
+      start.neste = new Node(x);
+      System.out.println(start.neste.data);
+    }
+    else{
+      Node p = start;
+
+      while (p.neste != null && p.neste.data.compareTo(x)<0){
+        p = p.neste;
+      } //p er stoerre eller lik x.
+
+      Node ny = new Node(x);
+      if (p.neste != null){
+        ny.neste = p.neste;
+      }
+      p.neste = ny;
+    }
+  }
+
+  @Override
+    public T fjern(){
+      int lengde = this.stoerrelse();
+      return fjern(lengde-1); /*Posisjon er lengde-1*/
+    }
+
+  @Override
+    public void leggTil(int pos, T x){
+      throw new UnsupportedOperationException("Denne kan ikke brukes.");
+    }
+
+  @Override
+  public void sett(int pos, T x){
+      throw new UnsupportedOperationException("Denne kan ikke brukes.");
+    }
+}
+
+Stabel.java
+class Stabel<T> extends Lenkeliste<T>{
+  public Stabel(){
+    super();
+  }
+
+  public void leggPaa(T x){
+    this.leggTil(x);
+  }
+
+  public T taAv(){
+    int lengde = this.stoerrelse();
+    return fjern(lengde-1); /*Posisjon er lengde-1*/
+  }
+}
+
+UgyldigListeIndeks.java
+class UgyldigListeIndeks extends RuntimeException{
+  UgyldigListeIndeks(int indeks) {
+    super("Ugyldig indeks: " + indeks);
+  }
+}

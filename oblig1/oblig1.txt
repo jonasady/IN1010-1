@@ -1,0 +1,171 @@
+Node.java
+public class Node{
+    private int minneStr; /*storrelse av minne i   GB*/
+    private int pros_ant; /*maks to prosessorer*/
+
+    public void setMinneStr(int storrelse){
+      minneStr=storrelse;
+    }
+
+    public void setPros_ant(int pros_ant){
+      pros_ant=pros_ant;
+    }
+
+    public int getAntProsessorer(){
+        return pros_ant;
+    }
+
+    public boolean nokMinne(int paakrevdMinne){
+        return (minneStr>=paakrevdMinne); /*Returnerer False hvis minneStr<paakrevdMinne*/
+    }
+}
+
+Rack.java
+import java.util.ArrayList;
+
+public class Rack{
+  private int antallProsessorer;
+  private ArrayList<Node> listNodes=new ArrayList<Node>(0);
+
+  public void settInn(int minnestorrelse, int antNyeProsessorer){
+    Node newNode = new Node();
+    newNode.setMinneStr(minnestorrelse);
+    newNode.setPros_ant(antNyeProsessorer);
+    listNodes.add(newNode);
+    antallProsessorer+=antNyeProsessorer;
+  }
+
+  public int getAntNoder(){
+    return listNodes.size();
+  }
+
+  public int getAntProsessorer(){
+    return antallProsessorer;
+  }
+
+  public int noderMedNokMinne(int paakrevdMinne){
+    int antNokMinne=0;
+    for (int i=0;i<listNodes.size();i++){
+      if (listNodes.get(i).nokMinne(paakrevdMinne)==true){
+        antNokMinne++;
+      }
+    }
+    return antNokMinne;
+  }
+
+}
+
+Regneklynge.java
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.*;
+
+class Regneklynge{
+  private File filnavn;
+  private int maksNoderPerRack;
+  private ArrayList<Rack> listRacks=new ArrayList<Rack>(0);
+
+  public Regneklynge(int maksNoderPerRack){
+    this.maksNoderPerRack = maksNoderPerRack;
+  } /*Konstruktoer tar inn maks antall noder i et rack.*/
+
+  public Regneklynge(String filnavn){
+    this.lesFil(filnavn);
+  } /*Konstruktoer tar inn filnavn.*/
+
+
+  public void setMaksAntNoder(int setMaksNoderPerRack){
+    this.maksNoderPerRack=setMaksNoderPerRack;
+  }
+
+/*Lagt til som oppgE..*/
+  public void lesFil(String filnavn){
+    try{
+      Scanner scanner = new Scanner(new File(filnavn));
+      while (scanner.hasNextLine()){
+        String line = scanner.nextLine();
+        String[] splitLine=line.split(" ");
+        if (splitLine.length==1){
+          this.setMaksAntNoder(Integer.parseInt(splitLine[0]));
+        }
+        else{
+          for (int i=0; i<Integer.parseInt(splitLine[0]);i++){
+            this.settInnNode(Integer.parseInt(splitLine[1]),Integer.parseInt(splitLine[2]));
+          }
+        }
+      }
+    }
+    catch (FileNotFoundException e){
+      System.out.println("Finner ikke filen.");
+      return;
+    }
+  }
+
+  public void settInnNode(int minne, int antProsessorer){
+    if (listRacks.size()==0){
+      Rack newRack = new Rack();
+      newRack.settInn(minne,antProsessorer);
+      listRacks.add(newRack);
+    }
+    else if (maksNoderPerRack>listRacks.get(listRacks.size()-1).getAntNoder()){
+      listRacks.get(listRacks.size()-1).settInn(minne,antProsessorer);
+    }
+    else{
+      Rack newRack = new Rack();
+      newRack.settInn(minne,antProsessorer);
+      listRacks.add(newRack);
+    }
+  }
+
+  public int antProsessorer(){
+    int antPros=0;
+    for (int i=0; i<listRacks.size();i++){
+      antPros=antPros+listRacks.get(i).getAntProsessorer();
+    }
+    return antPros;
+  }
+
+  public int noderMedNokMinne(int paakrevdMinne){
+    int noderNokMinne=0;
+    for (int i=0; i<listRacks.size();i++){
+      Rack temp_rack=listRacks.get(i);
+      noderNokMinne+=temp_rack.noderMedNokMinne(paakrevdMinne);
+    }
+    return noderNokMinne;
+  }
+
+  public int antRacks(){
+    return listRacks.size();
+  }
+}
+
+Regneklynge.txt
+12
+650 64 1
+16 1024 2
+
+Hovedprogram.java
+import java.util.Scanner;
+import java.io.*;
+
+class Hovedprogram{
+  public static void main(String[] args){
+    Regneklynge abel=new Regneklynge("regneklynge.txt"); /*OppgE*/
+
+    /*Det nedenfor hoerer til oppg.D*/
+    /*Regneklynge abel=new Regneklynge(12);*/
+    /*for (int i=0; i<650;i++){
+      abel.settInnNode(64,1);
+    }*/ /*Legger inn 650 noder med 64 GB og 1 prosessor*/
+
+    /*for (int i=0; i<16;i++){
+      abel.settInnNode(1024,2);
+    }*/ /*Legger inn 16 noder med 1024 GB og 2 prosessorer*/
+
+    System.out.println("Noder med minst 32 GB: "+abel.noderMedNokMinne(32));
+    System.out.println("Noder med minst 64 GB: "+abel.noderMedNokMinne(64));
+    System.out.println("Noder med minst 128 GB: "+abel.noderMedNokMinne(128));
+    System.out.println("Antall prosessorer: "+abel.antProsessorer());
+    System.out.println("Antall rack: "+abel.antRacks());
+  }
+}
