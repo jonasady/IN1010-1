@@ -1,0 +1,3 @@
+interface Administrator{
+  String finnAnsvar();
+}
